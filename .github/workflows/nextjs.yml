@@ -17,6 +17,11 @@ concurrency:
 jobs:
   build:
     runs-on: ubuntu-latest
+
+    defaults:
+      run:
+        working-directory: calculo-renal
+
     steps:
       - name: Checkout
         uses: actions/checkout@v4
@@ -35,7 +40,7 @@ jobs:
       - name: Upload static files
         uses: actions/upload-pages-artifact@v3
         with:
-          path: ./out
+          path: calculo-renal/out
 
   deploy:
     environment:
