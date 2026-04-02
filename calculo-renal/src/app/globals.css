@@ -1,1 +1,45 @@
 @import "tailwindcss";
+@import "katex/dist/katex.min.css";
+
+@theme inline {
+    --font-heading: var(--font-funnel);
+    --font-text: var(--font-inter);
+}
+
+@layer base {
+    h1, h2, h3, h4, h5, h6 {
+        @apply font-heading font-bold mb-2;
+    }
+
+    h1 {
+        @apply text-6xl;
+    }
+
+    h2 {
+        @apply text-4xl;
+    }
+
+    h3 {
+        @apply text-3xl;
+    }
+
+    h4 {
+        @apply text-2xl;
+    }
+
+    h5 {
+        @apply text-xl;
+    }
+
+    h6 {
+        @apply text-lg;
+    }
+
+    p {
+        @apply font-text text-base leading-relaxed mb-4;
+    }
+
+    small {
+        @apply text-sm;
+    }
+}
