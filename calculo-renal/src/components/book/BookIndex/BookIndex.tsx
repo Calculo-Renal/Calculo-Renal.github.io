@@ -74,11 +74,11 @@ export default function BookIndex(): React.ReactElement {
         setHeadings(mapped)
         setActiveId(mapped[0]?.id ?? "")
 
-        const activationOffset = 16
+        const activationOffset = 40
         let animationFrame = 0
 
         const updateActiveHeading = () => {
-            const rootTop = contentRoot.getBoundingClientRect().top
+            const rootBottom = contentRoot.getBoundingClientRect().bottom
             let currentId = mapped[0]?.id ?? ""
 
             for (const heading of mapped) {
@@ -88,9 +88,9 @@ export default function BookIndex(): React.ReactElement {
                     continue
                 }
 
-                const distanceFromTop = element.getBoundingClientRect().top - rootTop
+                const distanceFromBottom = element.getBoundingClientRect().bottom - rootBottom
 
-                if (distanceFromTop <= activationOffset) {
+                if (distanceFromBottom <= activationOffset) {
                     currentId = heading.id
                 } else {
                     break
@@ -124,9 +124,21 @@ export default function BookIndex(): React.ReactElement {
 
     const handleClick = (e: React.MouseEvent<HTMLAnchorElement>, id: string) => {
         e.preventDefault()
-        document.getElementById(id)?.scrollIntoView({
+
+        const contentRoot = document.querySelector("[data-book-content]") as HTMLElement | null
+        if (!contentRoot) return
+
+        const element = document.getElementById(id)
+        if (!element) return
+
+        const offset = 40
+        const elementTop = element.getBoundingClientRect().top
+        const containerTop = contentRoot.getBoundingClientRect().top
+        const scrollTop = elementTop - containerTop + contentRoot.scrollTop - offset
+
+        contentRoot.scrollTo({
+            top: scrollTop,
             behavior: "smooth",
-            block: "start",
         })
     }
 
@@ -139,10 +151,10 @@ export default function BookIndex(): React.ReactElement {
                             <a
                                 href={`#${heading.id}`}
                                 onClick={(e) => handleClick(e, heading.id)}
-                                className={`flex items-center gap-2 transition-colors ${
+                                className={`group flex items-center gap-2 transition-colors ${
                                     activeId === heading.id
                                         ? "text-black font-semibold"
-                                        : "text-gray-500 hover:text-black"
+                                        : "text-gray-300 hover:text-gray-400"
                                 }`}
                                 style={{
                                     marginLeft: `${(heading.level - 1) * 12}px`,
@@ -153,7 +165,7 @@ export default function BookIndex(): React.ReactElement {
                                     className={`rounded-full shrink-0 transition-all ${
                                         activeId === heading.id
                                             ? "w-3 h-3 bg-black"
-                                            : "w-2 h-2 bg-gray-400"
+                                            : "w-2 h-2 bg-gray-300 group-hover:bg-gray-400"
                                     }`}
                                     aria-hidden="true"
                                 />

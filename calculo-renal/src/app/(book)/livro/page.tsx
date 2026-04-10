@@ -10,8 +10,8 @@ export async function generateMetadata(): Promise<Metadata> {
 
 export default async function Page() {
     return (
-        <div>
-            <h1>Índice</h1>
+        <div className="px-[10vw] mt-4">
+            <h1>Sumário</h1>
             
             <ul className="flex flex-col gap-2">
                 {chapters.map((chapter, index) => (

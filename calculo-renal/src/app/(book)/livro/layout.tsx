@@ -1,4 +1,4 @@
-import "./globals.css"
+import "@/src/app/globals.css"
 import Header from "@/src/components/layout/Header/Header"
 import { Inter, Funnel_Display } from "next/font/google"
 import clsx from "clsx"
@@ -22,7 +22,7 @@ export const metadata = {
     }
 }
 
-export default function RootLayout({
+export default function SumarioLayout({
     children,
 }: Readonly<{
     children: React.ReactNode
