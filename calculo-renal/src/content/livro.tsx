@@ -5,15 +5,11 @@ export interface Chapter {
 
 export const chapters: Chapter[] = [
     {
-        title: "Exemplo",
-        slug: "exemplo",
+        title: "Exemplo 1",
+        slug: "exemplo1"
     },
     {
         title: "Exemplo 2",
-        slug: "exemplo2",
-    },
-    {
-        title: "Exemplo 3",
-        slug: "exemplo3",
+        slug: "exemplo2"
     }
 ]
