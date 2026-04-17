@@ -6,7 +6,7 @@ export interface Chapter {
 export const chapters: Chapter[] = [
     {
         title: "Exemplo 1",
-        slug: "exemplo1"
+        slug: "exemplo"
     },
     {
         title: "Exemplo 2",
