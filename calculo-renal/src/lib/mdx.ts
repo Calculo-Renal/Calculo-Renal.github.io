@@ -3,6 +3,15 @@ import remarkMath from "remark-math"
 import rehypeKatex from "rehype-katex"
 import fs from "fs"
 import path from "path"
+import Row from "@/src/components/shared/Row"
+import Column from "@/src/components/shared/Column"
+import Video from "@/src/components/shared/Video"
+
+const MDXComponents = {
+    Row,
+    Column,
+    Video
+}
 
 export async function getMDX(relativePath: string, slug: string) {
     const filePath = path.join(
@@ -21,6 +30,7 @@ export async function getMDX(relativePath: string, slug: string) {
                 rehypePlugins: [rehypeKatex],
             },
         },
+        components: MDXComponents
     })
 
     return content
