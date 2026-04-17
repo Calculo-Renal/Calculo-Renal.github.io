@@ -1,5 +1,5 @@
 import Image from "next/image"
-import LogoImage from "@/src/public/logo.svg"
+import LogoImage from "@/public/logo.svg"
 import Link from "next/link"
 import Navigation from "@/src/components/layout/Navigation/Navigation"
 
