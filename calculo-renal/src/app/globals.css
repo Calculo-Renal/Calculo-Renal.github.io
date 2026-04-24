@@ -43,3 +43,10 @@
         @apply text-sm;
     }
 }
+
+.katex-html {
+    display: inline-flex !important;
+    justify-content: center;
+    row-gap: .5rem;
+    flex-wrap: wrap;
+}
