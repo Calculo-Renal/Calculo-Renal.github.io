@@ -1,0 +1,41 @@
+{
+  "expo": {
+    "name": "calculo-renal",
+    "slug": "calculo-renal",
+    "version": "1.0.0",
+    "orientation": "portrait",
+    "icon": "./assets/images/icon.png",
+    "scheme": "calculorenal",
+    "userInterfaceStyle": "automatic",
+    "android": {
+      "package": "com.calculorenal.calculorenal"
+    },
+    "web": {
+      "output": "static",
+      "favicon": "./assets/images/favicon.ico"
+    },
+    "plugins": [
+      "expo-router",
+      [
+        "expo-splash-screen",
+        {
+          "backgroundColor": "#212225",
+          "android": {
+            "image": "./assets/images/icon.png",
+            "imageWidth": 76
+          }
+        }
+      ]
+    ],
+    "experiments": {
+      "typedRoutes": true,
+      "reactCompiler": true
+    },
+    "extra": {
+      "router": {},
+      "eas": {
+        "projectId": "2848fa4e-cec2-42d4-8bc5-389da029d091"
+      }
+    }
+  }
+}
