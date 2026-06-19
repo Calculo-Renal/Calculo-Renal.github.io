@@ -11,8 +11,8 @@ export const Colors = {
   light: {
     primary: "#EEC39A",
 
-    background: "#FFFFFF",
-    surface: "#F0F0F3",
+    background: "#F1F1F1",
+    surface: "#E2E2E2",
     surfaceActive: "#E0E1E6",
 
     text: "#000000",
@@ -24,8 +24,8 @@ export const Colors = {
   dark: {
     primary: "#EEC39A",
 
-    background: "#000000",
-    surface: "#212225",
+    background: "#1E1E1E",
+    surface: "#2D2D2D",
     surfaceActive: "#2E3135",
 
     text: "#FFFFFF",
