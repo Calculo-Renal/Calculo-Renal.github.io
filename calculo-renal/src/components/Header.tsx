@@ -11,10 +11,7 @@ export default function Header() {
     <View style={[styles.header, {
       backgroundColor: theme.surface
     }]}>
-      <LinkPressable href={"/(desktop)"} style={{
-        width: "100%",
-        height: "100%",
-      }}>
+      <LinkPressable href={"/(desktop)"}>
         <Logo />
       </LinkPressable>
       <Navigation />
@@ -24,8 +21,13 @@ export default function Header() {
 
 const styles = StyleSheet.create({
   header: {
+    width: "100%",
+  
     flexDirection: "row",
+    justifyContent: "space-between",
     gap: 4,
+  
     paddingVertical: 12,
+    paddingHorizontal: "20%",
   }
 })
