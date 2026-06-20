@@ -15,7 +15,7 @@ export default function Navigation() {
 const styles = StyleSheet.create({
   navigation: {
     flexDirection: "row",
-    gap: 8,
+    gap: 24,
     justifyContent: "center",
     alignItems: "center",
   },
