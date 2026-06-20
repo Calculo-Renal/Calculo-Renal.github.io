@@ -1,0 +1,111 @@
+{
+  "title": "Introdução aos Limites e Derivadas",
+  "content": [
+    {
+      "title": "Limites Laterais",
+      "content": [
+        {
+          "type": "row",
+          "data": [
+            {
+              "type": "text",
+              "data": "Considere a função f(x) = 2\\cos(2x+1), definida para -3 \\le x \\le 1. No vídeo ao lado, observamos o comportamento do gráfico quando x se aproxima de 1, analisando os limites laterais."
+            },
+            {
+              "type": "video",
+              "data": "/assets/limites-1.mp4"
+            }
+          ]
+        },
+        {
+          "title": "Limite lateral esquerdo",
+          "content": [
+            {
+              "type": "formula",
+              "data": "\\lim_{x \\to 1^-} f(x)"
+            },
+            {
+              "type": "text",
+              "data": "Como a função é contínua em seu domínio, o valor do limite lateral esquerdo coincide com o valor da função no ponto:"
+            },
+            {
+              "type": "formula",
+              "data": "\\lim_{x \\to 1^-} f(x) = f(1) = 2\\cos(3)."
+            }
+          ]
+        },
+        {
+          "title": "Limite lateral direito",
+          "content": [
+            {
+              "type": "formula",
+              "data": "\\lim_{x \\to 1^+} f(x)"
+            },
+            {
+              "type": "text",
+              "data": "Para analisar esse limite, precisaríamos de valores de x maiores que 1."
+            },
+            {
+              "type": "text",
+              "data": "Entretanto, como a função não está definida para esses valores, não existem valores de x pertencentes ao domínio, à direita de 1."
+            },
+            {
+              "type": "text",
+              "data": "Assim, o limite lateral direito não existe."
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "title": "Máximos Locais e a Tangente Horizontal",
+      "content": [
+        {
+          "type": "text",
+          "data": "Em um ponto de máximo local a tangente é horizontal. Nesse caso, f'(x) = 0."
+        },
+        {
+          "type": "video",
+          "data": "/assets/maximo-local-parabola.mp4",
+          "description": "Função f(x) = -x^2 + 4. Um ponto móvel sai de uma perna da parábola, sobe até o vértice e depois desce. A reta tangente acompanha o ponto, ficando horizontal no vértice com o destaque f'(x) = 0."
+        }
+      ]
+    },
+    {
+      "title": "Crescimento e Decrescimento",
+      "content": [
+        {
+          "type": "text",
+          "data": "Quando a derivada é positiva, a função está crescendo. Quando a derivada é negativa, a função está decrescendo."
+        },
+        {
+          "type": "formula",
+          "data": "f'(x) > 0 \\rightarrow \\text{função crescente}"
+        },
+        {
+          "type": "formula",
+          "data": "f'(x) < 0 \\rightarrow \\text{função decrescente}"
+        },
+        {
+          "type": "video",
+          "data": "/assets/crescimento-decrescimento-cubica.mp4",
+          "description": "Função f(x) = x^3 - 3x. Um ponto percorre a curva com a reta tangente. Regiões com inclinação positiva são destacadas em verde (crescente) e regiões com inclinação negativa em vermelho (decrescente)."
+        }
+      ]
+    },
+    {
+      "title": "Função Seno e sua Derivada",
+      "content": [
+        {
+          "type": "text",
+          "data": "Função seno e sua derivada. f(x) = \\operatorname{sen}(x) \\Rightarrow f'(x) = \\cos(x)."
+        },
+        {
+          "type": "video",
+          "data": "/assets/seno-cosseno-derivada.mp4",
+          "description": "Dois gráficos alinhados verticalmente: f(x) = sen(x) no topo e f'(x) = cos(x) embaixo. Pontos síncronos percorrem ambas as curvas, destacando f'(x) = 0 nos pontos de máximo e mínimo do seno."
+        }
+      ]
+    }
+  ]
+}

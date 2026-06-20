@@ -25,7 +25,9 @@
             "imageWidth": 76
           }
         }
-      ]
+      ],
+      "expo-asset",
+      "react-native-enriched-markdown"
     ],
     "experiments": {
       "typedRoutes": true,
