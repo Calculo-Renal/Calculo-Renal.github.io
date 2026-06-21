@@ -1,12 +1,13 @@
 import { ReactNode } from "react";
 import { Link, Href, usePathname } from "expo-router";
-import { Pressable, PressableProps, StyleSheet } from "react-native";
+import { Platform, Pressable, PressableProps, StyleSheet } from "react-native";
 import ThemedText from "@/components/ThemedText";
 
 type LinkPressableProps = PressableProps & {
   href: Href;
   children: string | ReactNode;
   activeStyle?: any;
+  target?: "_blank" | "_self" | "_parent" | "_top" | (string & object);
 };
 
 export default function LinkPressable({
@@ -14,6 +15,7 @@ export default function LinkPressable({
   children,
   style,
   activeStyle,
+  target,
   ...props
 }: LinkPressableProps) {
   const pathname = usePathname();
@@ -25,9 +27,25 @@ export default function LinkPressable({
   const isActive = currentSegment === targetSegment;
 
   const flattenedStyle = StyleSheet.flatten([style, isActive && activeStyle]);
+  const useAnchor = Platform.OS === "web" && target != null;
+  const anchorStyle = Platform.OS === "web" && target != null ? [flattenedStyle, { display: "inline-flex" }] : flattenedStyle;
+
+  if (useAnchor) {
+    return (
+      <Link href={href} target={target} style={anchorStyle}>
+        {typeof children === "string" ? (
+          <ThemedText style={isActive ? { fontWeight: "bold" } : undefined}>
+            {children}
+          </ThemedText>
+        ) : (
+          children
+        )}
+      </Link>
+    );
+  }
 
   return (
-    <Link href={href} asChild>
+    <Link href={href} target={target} asChild>
       <Pressable style={flattenedStyle} {...props}>
         {typeof children === "string" ? (
           <ThemedText style={isActive ? { fontWeight: "bold" } : undefined}>
