@@ -1,10 +1,9 @@
+import { View, StyleSheet, Platform } from "react-native";
 import ThemedText from "@/components/ThemedText";
 import { useTheme } from "@/hooks/use-theme";
-import { View, StyleSheet, Platform } from "react-native";
 
 const KatexMobile =
   Platform.OS !== "web" ? require("react-native-katex").default : null;
-
 const KatexWeb =
   Platform.OS === "web"
     ? {
@@ -19,53 +18,66 @@ if (Platform.OS === "web") {
 
 export default function MathFormula({ value }: { value: string }) {
   const theme = useTheme();
+  const isInline =
+    value.trim().startsWith("$") && !value.trim().startsWith("$$");
+  const cleanValue = value.replace(/\$/g, "").trim();
 
   if (Platform.OS === "web" && KatexWeb) {
     const { BlockMath, InlineMath } = KatexWeb;
-    const isInline = value.trim().startsWith("$");
-    const cleanValue = isInline ? value.replace(/\$/g, "").trim() : value;
-
-    const webStyle = StyleSheet.flatten([
-      styles.web,
-      { color: theme.text } as any,
-    ]);
-
-    return (
-      <View style={webStyle}>
-        {isInline ? <InlineMath math={cleanValue} /> : <BlockMath math={cleanValue} />}
+    return isInline ? (
+      <ThemedText style={{ color: theme.text }}>
+        <InlineMath math={cleanValue} />
+      </ThemedText>
+    ) : (
+      <View style={styles.webBlock}>
+        <ThemedText style={{ color: theme.text }}>
+          <BlockMath math={cleanValue} />
+        </ThemedText>
       </View>
     );
   }
 
-  return KatexMobile ? (
-    <View style={styles.mobileContainer}>
-      <KatexMobile
-        expression={value}
-        style={styles.mobile}
-        displayMode={true}
-        throwOnError={false}
-      />
-    </View>
-  ) : (
-    <ThemedText>{value}</ThemedText>
-  );
+  if (KatexMobile) {
+    if (isInline) {
+      return (
+        <View style={styles.mobileInlineContainer}>
+          <KatexMobile
+            expression={cleanValue}
+            style={{ flex: 1, backgroundColor: "transparent" }}
+            displayMode={false}
+            throwOnError={false}
+          />
+        </View>
+      );
+    }
+    return (
+      <View style={styles.mobileBlockContainer}>
+        <KatexMobile
+          expression={cleanValue}
+          style={{ flex: 1, backgroundColor: "transparent" }}
+          displayMode={true}
+          throwOnError={false}
+        />
+      </View>
+    );
+  }
+
+  return <ThemedText>{value}</ThemedText>;
 }
 
 const styles = StyleSheet.create({
-  web: {
+  webBlock: {
     width: "100%",
-    backgroundColor: "transparent",
-    marginVertical: 12,
+    marginVertical: 8,
     alignItems: "center",
-    overflow: "auto" as any,
   },
-  mobileContainer: {
+  mobileBlockContainer: {
     width: "100%",
-    height: 100,
-    marginVertical: 12,
+    height: 80,
+    marginVertical: 8,
   },
-  mobile: {
-    flex: 1,
-    backgroundColor: "transparent",
+  mobileInlineContainer: {
+    height: 24,
+    minWidth: 30,
   },
 });

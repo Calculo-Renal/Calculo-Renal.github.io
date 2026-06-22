@@ -55,7 +55,6 @@ export default function ChapterScreen() {
 
   return (
     <ThemedView style={styles.screenLayout}>
-      {/* Container adicionado para aplicar o flex de 20% na Sidebar */}
       <View style={styles.sidebarContainer}>
         <Sidebar 
           currentChapterData={chapterData} 

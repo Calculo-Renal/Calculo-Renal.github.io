@@ -21,7 +21,7 @@ export default function AboutUsPage() {
       <ThemedText style={styles.title}>Orientadora</ThemedText>
       <View style={styles.item}>
         <Image
-          source={require("calculo-renal/assets/images/izabela-pfp.png")}
+          source={require("@/assets/images/sobre-nos/izabela-pfp.png")}
           style={styles.image}
         />
         <ThemedText style={styles.name}>Izabela</ThemedText>

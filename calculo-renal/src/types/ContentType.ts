@@ -20,6 +20,10 @@ type ContentType =
   | {
       type: "row";
       data: ContentType[];
+    }
+  | {
+      type: "col";
+      data: ContentType[];
     };
 
 export default ContentType;

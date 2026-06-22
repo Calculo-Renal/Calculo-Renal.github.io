@@ -4,6 +4,7 @@ import { ProcessedEntryContentType, ProcessedEntryType } from "@/types/EntryType
 import ContentType from "@/types/ContentType";
 import ThemedText from "@/components/ThemedText";
 import MathFormula from "@/components/MathFormula";
+import VideoScreen from "@/components/VideoScreen"
 
 interface SectionProps {
   node: ProcessedEntryType;
@@ -52,9 +53,21 @@ export default function Section({ node, depth = 0, onRegisterSectionRef }: Secti
         return renderMixedText(content.data);
       case "formula":
         return <MathFormula value={content.data} />;
+      case "video":
+        return <VideoScreen source={content.data} />
       case "row":
         return (
           <View style={{ flexDirection: "row", flexWrap: "wrap" }}>
+            {content.data.map((sub, idx) => (
+              <View key={idx} style={{ flex: 1 }}>
+                {renderContent(sub)}
+              </View>
+            ))}
+          </View>
+        );
+      case "col":
+        return (
+          <View style={{ flexDirection: "column", flexWrap: "wrap" }}>
             {content.data.map((sub, idx) => (
               <View key={idx} style={{ flex: 1 }}>
                 {renderContent(sub)}
