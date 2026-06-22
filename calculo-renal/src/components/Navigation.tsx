@@ -5,6 +5,7 @@ import { StyleSheet } from "react-native";
 export default function Navigation() {
   return (
     <View style={styles.navigation}>
+      <LinkPressable href={"/(desktop)"}>Inicio</LinkPressable>
       <LinkPressable href={"/(desktop)/livro"}>Livro</LinkPressable>
       <LinkPressable href={"/(desktop)/sobre-nos"}>Sobre nós</LinkPressable>
       <LinkPressable href={"/(desktop)/conquistas"}>Conquistas</LinkPressable>
