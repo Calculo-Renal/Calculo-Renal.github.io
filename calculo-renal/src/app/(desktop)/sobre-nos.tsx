@@ -24,7 +24,7 @@ export default function AboutUsPage() {
           source={require("@/assets/images/sobre-nos/izabela-pfp.png")}
           style={styles.image}
         />
-        <ThemedText style={styles.name}>Izabela</ThemedText>
+        <ThemedText style={styles.name}>Izabela Marques</ThemedText>
       </View>
       <ThemedText style={styles.title}>Orientandos</ThemedText>
       <View style={styles.row}>

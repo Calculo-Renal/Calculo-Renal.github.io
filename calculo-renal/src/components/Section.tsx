@@ -10,9 +10,10 @@ interface SectionProps {
   node: ProcessedEntryType;
   depth?: number;
   onRegisterSectionRef: (id: number, ref: View | null) => void;
+  onRegisterSectionLayout?: (id: number, y: number) => void;
 }
 
-export default function Section({ node, depth = 0, onRegisterSectionRef }: SectionProps) {
+export default function Section({ node, depth = 0, onRegisterSectionRef, onRegisterSectionLayout }: SectionProps) {
   const sectionRef = React.useRef<View>(null);
 
   React.useEffect(() => {
@@ -93,6 +94,7 @@ export default function Section({ node, depth = 0, onRegisterSectionRef }: Secti
             node={subNode}
             depth={depth + 1}
             onRegisterSectionRef={onRegisterSectionRef}
+            onRegisterSectionLayout={onRegisterSectionLayout}
           />
         )
       );
@@ -102,16 +104,34 @@ export default function Section({ node, depth = 0, onRegisterSectionRef }: Secti
       return renderContent(content as ContentType);
     }
 
-    return <Section node={content} depth={depth + 1} onRegisterSectionRef={onRegisterSectionRef} />;
+    return (
+      <Section
+        node={content}
+        depth={depth + 1}
+        onRegisterSectionRef={onRegisterSectionRef}
+        onRegisterSectionLayout={onRegisterSectionLayout}
+      />
+    );
   };
 
   return (
-    <View ref={sectionRef} nativeID={String(node.id)} style={{ marginLeft: depth * 12, marginVertical: 8 }}>
-      <ThemedText style={[
-        depth === 0 && { fontSize: 24, fontWeight: "700" },
-        depth === 1 && { fontSize: 20, fontWeight: "600" },
-        depth >= 2 && { fontSize: 16, fontWeight: "500" }
-      ]}>
+    <View
+      ref={sectionRef}
+      nativeID={String(node.id)}
+      style={{ marginLeft: depth * 12, marginVertical: 8 }}
+      onLayout={(event) => {
+        if (onRegisterSectionLayout) {
+          onRegisterSectionLayout(node.id, event.nativeEvent.layout.y);
+        }
+      }}
+    >
+      <ThemedText
+        style={[
+          depth === 0 && { fontSize: 24, fontWeight: "700" },
+          depth === 1 && { fontSize: 20, fontWeight: "600" },
+          depth >= 2 && { fontSize: 16, fontWeight: "500" },
+        ]}
+      >
         {node.title}
       </ThemedText>
 

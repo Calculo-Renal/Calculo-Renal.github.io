@@ -5,12 +5,18 @@ import Section from "@/components/Section";
 interface ChapterContentProps {
   chapterData: ProcessedChapterType;
   onRegisterSectionRef: (id: number, ref: View | null) => void;
+  onRegisterSectionLayout?: (id: number, y: number) => void;
 }
 
-export default function ChapterContent({ chapterData, onRegisterSectionRef }: ChapterContentProps) {
+export default function ChapterContent({ chapterData, onRegisterSectionRef, onRegisterSectionLayout }: ChapterContentProps) {
   return (
     <View style={styles.container}>
-      <Section node={chapterData.data} depth={0} onRegisterSectionRef={onRegisterSectionRef} />
+      <Section
+        node={chapterData.data}
+        depth={0}
+        onRegisterSectionRef={onRegisterSectionRef}
+        onRegisterSectionLayout={onRegisterSectionLayout}
+      />
     </View>
   );
 }

@@ -1,6 +1,7 @@
 import { View, TouchableOpacity } from "react-native";
 import { ProcessedChapterType } from "@/data/sumario";
 import { ProcessedEntryContentType, ProcessedEntryType } from "@/types/EntryType";
+import { useTheme } from "@/hooks/use-theme"
 import ContentType from "@/types/ContentType";
 import ThemedScrollView from "@/components/ThemedScrollView";
 import ThemedText from "@/components/ThemedText";
@@ -64,11 +65,10 @@ function TocItem({
       />
     );
   };
-
   return (
-    <View style={{ marginLeft: depth * 12 }}>
+    <View style={{ marginLeft: depth * 12}}>
       <TouchableOpacity onPress={() => onSelectSection(node.id)}>
-        <ThemedText style={isActive ? { color: "#007AFF", fontWeight: "600" } : {}}>
+        <ThemedText style={isActive ? { fontWeight: "600" } : { opacity: 0.65 }}>
           {labelNumber} {node.title}
         </ThemedText>
       </TouchableOpacity>
@@ -79,13 +79,17 @@ function TocItem({
 }
 
 export default function Sidebar({ currentChapterData, activeId, onSelectSection }: SidebarProps) {
+  const theme = useTheme();
   return (
-    <View>
-      <ThemedText style={{ fontWeight: "700", fontSize: 16 }}>
+    <View style={{ backgroundColor: theme.surface, flex: 1 }}>
+      <ThemedText style={{ fontWeight: "700", fontSize: 16, padding: 4}}>
         {currentChapterData.data.title}
       </ThemedText>
       
-      <ThemedScrollView>
+      <ThemedScrollView
+        style={{ backgroundColor: theme.surface, flex: 1 }}
+        contentContainerStyle={{ backgroundColor: theme.surface, flexGrow: 1, minHeight: "100%", padding: 4}}
+      >
         <TocItem
           node={currentChapterData.data}
           activeId={activeId}

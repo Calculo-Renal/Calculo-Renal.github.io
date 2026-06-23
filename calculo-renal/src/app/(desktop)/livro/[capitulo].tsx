@@ -1,7 +1,8 @@
-import { useCallback, useRef, useState } from "react";
-import { Platform, ScrollView, StyleSheet, View } from "react-native";
+import { useCallback, useEffect, useRef, useState } from "react";
+import { NativeSyntheticEvent, NativeScrollEvent, Platform, ScrollView, StyleSheet, View } from "react-native";
 import { useLocalSearchParams, Redirect } from "expo-router";
 import { sumario } from "@/data/sumario";
+import { useHeaderHeight } from "@/context/HeaderHeightContext";
 import ThemedScrollView from "@/components/ThemedScrollView";
 import ThemedView from "@/components/ThemedView";
 import Sidebar from "@/components/Sidebar";
@@ -10,9 +11,10 @@ import ChapterContent from "@/components/ChapterContent";
 export default function ChapterScreen() {
   const { capitulo } = useLocalSearchParams<{ capitulo: string }>();
   const [activeId, setActiveId] = useState<number>(1);
+  const { headerHeight } = useHeaderHeight();
   const scrollViewRef = useRef<ScrollView>(null);
-  
   const sectionRefs = useRef<Map<number, View>>(new Map());
+  const sectionPositions = useRef<Map<number, number>>(new Map());
 
   const chapterData = capitulo ? sumario[capitulo] : null;
 
@@ -25,7 +27,26 @@ export default function ChapterScreen() {
       sectionRefs.current.set(id, ref);
     } else {
       sectionRefs.current.delete(id);
+      sectionPositions.current.delete(id);
     }
+  }, []);
+
+  const measureSectionPositions = useCallback(() => {
+    if (!scrollViewRef.current) return;
+
+    sectionRefs.current.forEach((ref, id) => {
+      if (!ref) return;
+
+      ref.measureLayout(
+        scrollViewRef.current as any,
+        (_x, y) => {
+          sectionPositions.current.set(id, y);
+        },
+        () => {
+          // ignore measurement failures for sections not yet rendered
+        }
+      );
+    });
   }, []);
 
   const handleSelectSection = useCallback((id: number) => {
@@ -53,6 +74,36 @@ export default function ChapterScreen() {
     }
   }, []);
 
+  const handleRegisterSectionLayout = useCallback((id: number, y: number) => {
+    sectionPositions.current.set(id, y);
+  }, []);
+
+  useEffect(() => {
+    measureSectionPositions();
+  }, [chapterData, measureSectionPositions]);
+
+  const handleScroll = useCallback((event: NativeSyntheticEvent<NativeScrollEvent>) => {
+    const currentY = event.nativeEvent.contentOffset.y;
+    if (sectionPositions.current.size !== sectionRefs.current.size) {
+      measureSectionPositions();
+    }
+
+    const sortedEntries = Array.from(sectionPositions.current.entries()).sort((a, b) => a[1] - b[1]);
+    let nextActiveId = activeId;
+
+    for (const [id, top] of sortedEntries) {
+      if (top <= currentY + headerHeight) {
+        nextActiveId = id;
+      } else {
+        break;
+      }
+    }
+
+    if (nextActiveId !== activeId) {
+      setActiveId(nextActiveId);
+    }
+  }, [activeId, headerHeight, measureSectionPositions]);
+
   return (
     <ThemedView style={styles.screenLayout}>
       <View style={styles.sidebarContainer}>
@@ -63,8 +114,19 @@ export default function ChapterScreen() {
         />
       </View>
 
-      <ThemedScrollView ref={scrollViewRef} style={styles.mainContent} contentContainerStyle={styles.container}>
-        <ChapterContent chapterData={chapterData} onRegisterSectionRef={handleRegisterSectionRef} />
+      <ThemedScrollView
+        ref={scrollViewRef}
+        style={styles.mainContent}
+        contentContainerStyle={styles.container}
+        onScroll={handleScroll}
+        scrollEventThrottle={16}
+        onContentSizeChange={measureSectionPositions}
+      >
+        <ChapterContent
+          chapterData={chapterData}
+          onRegisterSectionRef={handleRegisterSectionRef}
+          onRegisterSectionLayout={handleRegisterSectionLayout}
+        />
       </ThemedScrollView>
     </ThemedView>
   );
@@ -77,6 +139,7 @@ const styles = StyleSheet.create({
   },
   sidebarContainer: {
     flex: 0.2,
+    height: "100%",
   },
   mainContent: {
     paddingHorizontal: "10%",
