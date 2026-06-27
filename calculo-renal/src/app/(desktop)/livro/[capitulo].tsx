@@ -43,7 +43,7 @@ export default function ChapterScreen() {
           sectionPositions.current.set(id, y);
         },
         () => {
-          // ignore measurement failures for sections not yet rendered
+          // Ignora falhas de renderização, pois a seção pode não estar visível no momento da medição
         }
       );
     });
