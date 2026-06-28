@@ -1,26 +1,28 @@
+import { useEffect } from "react";
 import { View, StyleSheet, Platform } from "react-native";
 import ThemedText from "@/components/ThemedText";
 import { useTheme } from "@/hooks/use-theme";
 
 const KatexMobile =
   Platform.OS !== "web" ? require("react-native-katex").default : null;
-const KatexWeb =
-  Platform.OS === "web"
-    ? {
-        BlockMath: require("react-katex").BlockMath,
-        InlineMath: require("react-katex").InlineMath,
-      }
-    : null;
-
-if (Platform.OS === "web") {
-  require("katex/dist/katex.min.css");
-}
+const KatexWeb = Platform.OS === "web" ? require("react-katex") : null;
 
 export default function MathFormula({ value }: { value: string }) {
   const theme = useTheme();
   const isInline =
     value.trim().startsWith("$") && !value.trim().startsWith("$$");
   const cleanValue = value.replace(/\$/g, "").trim();
+
+  useEffect(() => {
+    if (Platform.OS === "web" && !document.getElementById("katex-css")) {
+      const link = document.createElement("link");
+      link.id = "katex-css";
+      link.rel = "stylesheet";
+      link.href =
+        "https://cdn.jsdelivr.net/npm/katex@0.16.9/dist/katex.min.css";
+      document.head.appendChild(link);
+    }
+  }, []);
 
   if (Platform.OS === "web" && KatexWeb) {
     const { BlockMath, InlineMath } = KatexWeb;
@@ -38,24 +40,16 @@ export default function MathFormula({ value }: { value: string }) {
   }
 
   if (KatexMobile) {
-    if (isInline) {
-      return (
-        <View style={styles.mobileInlineContainer}>
-          <KatexMobile
-            expression={cleanValue}
-            style={{ flex: 1, backgroundColor: "transparent" }}
-            displayMode={false}
-            throwOnError={false}
-          />
-        </View>
-      );
-    }
     return (
-      <View style={styles.mobileBlockContainer}>
+      <View
+        style={
+          isInline ? styles.mobileInlineContainer : styles.mobileBlockContainer
+        }
+      >
         <KatexMobile
           expression={cleanValue}
-          style={{ flex: 1, backgroundColor: "transparent" }}
-          displayMode={true}
+          style={styles.flexTarget}
+          displayMode={!isInline}
           throwOnError={false}
         />
       </View>
@@ -66,6 +60,10 @@ export default function MathFormula({ value }: { value: string }) {
 }
 
 const styles = StyleSheet.create({
+  flexTarget: {
+    flex: 1,
+    backgroundColor: "transparent",
+  },
   webBlock: {
     width: "100%",
     marginVertical: 8,
