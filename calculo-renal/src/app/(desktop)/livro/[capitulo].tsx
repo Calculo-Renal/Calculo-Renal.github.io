@@ -1,8 +1,14 @@
 import { useCallback, useEffect, useRef, useState } from "react";
-import { NativeSyntheticEvent, NativeScrollEvent, Platform, ScrollView, StyleSheet, View } from "react-native";
+import {
+  NativeSyntheticEvent,
+  NativeScrollEvent,
+  Platform,
+  ScrollView,
+  StyleSheet,
+  View,
+} from "react-native";
 import { useLocalSearchParams, Redirect } from "expo-router";
 import { sumario } from "@/data/sumario";
-import { useHeaderHeight } from "@/context/HeaderHeightContext";
 import ThemedScrollView from "@/components/ThemedScrollView";
 import ThemedView from "@/components/ThemedView";
 import Sidebar from "@/components/Sidebar";
@@ -11,105 +17,93 @@ import ChapterContent from "@/components/ChapterContent";
 export default function ChapterScreen() {
   const { capitulo } = useLocalSearchParams<{ capitulo: string }>();
   const [activeId, setActiveId] = useState<number>(1);
-  const { headerHeight } = useHeaderHeight();
   const scrollViewRef = useRef<ScrollView>(null);
   const sectionRefs = useRef<Map<number, View>>(new Map());
   const sectionPositions = useRef<Map<number, number>>(new Map());
+  const isAutoScrolling = useRef<boolean>(false);
 
   const chapterData = capitulo ? sumario[capitulo] : null;
+
+  useEffect(() => {
+    sectionPositions.current.clear();
+    sectionRefs.current.clear();
+    setActiveId(1);
+  }, [capitulo]);
 
   if (!chapterData) {
     return <Redirect href={"/404" as any} />;
   }
 
   const handleRegisterSectionRef = useCallback((id: number, ref: View | null) => {
-    if (ref) {
-      sectionRefs.current.set(id, ref);
-    } else {
-      sectionRefs.current.delete(id);
-      sectionPositions.current.delete(id);
-    }
-  }, []);
-
-  const measureSectionPositions = useCallback(() => {
-    if (!scrollViewRef.current) return;
-
-    sectionRefs.current.forEach((ref, id) => {
-      if (!ref) return;
-
-      ref.measureLayout(
-        scrollViewRef.current as any,
-        (_x, y) => {
-          sectionPositions.current.set(id, y);
-        },
-        () => {
-          // Ignora falhas de renderização, pois a seção pode não estar visível no momento da medição
-        }
-      );
-    });
-  }, []);
-
-  const handleSelectSection = useCallback((id: number) => {
-    setActiveId(id);
-
-    const targetRef = sectionRefs.current.get(id);
-    if (!targetRef) return;
-
-    if (Platform.OS === "web" && "scrollIntoView" in targetRef) {
-      (targetRef as unknown as HTMLElement).scrollIntoView({
-        behavior: "smooth",
-        block: "start",
-      });
-      return;
-    }
-
-    if (scrollViewRef.current) {
-      targetRef.measureLayout(
-        scrollViewRef.current as any,
-        (_x, y) => {
-          scrollViewRef.current?.scrollTo({ y: Math.max(0, y - 16), animated: true });
-        },
-        () => console.warn(`Falha ao medir a seção com ID: ${id}`)
-      );
-    }
+    if (ref) sectionRefs.current.set(id, ref);
+    else sectionRefs.current.delete(id);
   }, []);
 
   const handleRegisterSectionLayout = useCallback((id: number, y: number) => {
     sectionPositions.current.set(id, y);
   }, []);
 
-  useEffect(() => {
-    measureSectionPositions();
-  }, [chapterData, measureSectionPositions]);
+  const handleSelectSection = useCallback((id: number) => {
+    isAutoScrolling.current = true;
+    setActiveId(id);
 
-  const handleScroll = useCallback((event: NativeSyntheticEvent<NativeScrollEvent>) => {
-    const currentY = event.nativeEvent.contentOffset.y;
-    if (sectionPositions.current.size !== sectionRefs.current.size) {
-      measureSectionPositions();
-    }
-
-    const sortedEntries = Array.from(sectionPositions.current.entries()).sort((a, b) => a[1] - b[1]);
-    let nextActiveId = activeId;
-
-    for (const [id, top] of sortedEntries) {
-      if (top <= currentY + headerHeight) {
-        nextActiveId = id;
-      } else {
-        break;
+    if (Platform.OS === "web") {
+      const targetRef = sectionRefs.current.get(id);
+      if (targetRef && "scrollIntoView" in targetRef) {
+        (targetRef as unknown as HTMLElement).scrollIntoView({
+          behavior: "smooth",
+          block: "start",
+        });
+        setTimeout(() => {
+          isAutoScrolling.current = false;
+        }, 800);
+        return;
       }
     }
 
-    if (nextActiveId !== activeId) {
-      setActiveId(nextActiveId);
+    const targetY = sectionPositions.current.get(id);
+    if (targetY !== undefined && scrollViewRef.current) {
+      scrollViewRef.current.scrollTo({
+        y: Math.max(0, targetY),
+        animated: true,
+      });
+    } else {
+      isAutoScrolling.current = false;
     }
-  }, [activeId, headerHeight, measureSectionPositions]);
+  }, []);
+
+  const handleScroll = useCallback(
+    (event: NativeSyntheticEvent<NativeScrollEvent>) => {
+      if (isAutoScrolling.current) return;
+
+      const currentY = event.nativeEvent.contentOffset.y;
+      let nextActiveId = activeId;
+      let closestTop = -Infinity;
+
+      sectionPositions.current.forEach((top, id) => {
+        if (currentY >= top - 10 && top > closestTop) {
+          closestTop = top;
+          nextActiveId = id;
+        }
+      });
+
+      if (nextActiveId !== activeId) {
+        setActiveId(nextActiveId);
+      }
+    },
+    [activeId],
+  );
+
+  const handleScrollEnd = useCallback(() => {
+    isAutoScrolling.current = false;
+  }, []);
 
   return (
     <ThemedView style={styles.screenLayout}>
       <View style={styles.sidebarContainer}>
-        <Sidebar 
-          currentChapterData={chapterData} 
-          activeId={activeId} 
+        <Sidebar
+          currentChapterData={chapterData}
+          activeId={activeId}
           onSelectSection={handleSelectSection}
         />
       </View>
@@ -119,8 +113,9 @@ export default function ChapterScreen() {
         style={styles.mainContent}
         contentContainerStyle={styles.container}
         onScroll={handleScroll}
+        onMomentumScrollEnd={handleScrollEnd}
+        onScrollAnimationEnd={handleScrollEnd}
         scrollEventThrottle={16}
-        onContentSizeChange={measureSectionPositions}
       >
         <ChapterContent
           chapterData={chapterData}
@@ -138,12 +133,15 @@ const styles = StyleSheet.create({
     flexDirection: "row",
   },
   sidebarContainer: {
-    flex: 0.2,
+    flex: 0.25,
     height: "100%",
+    padding: 16,
+    minWidth: 260,
+    justifyContent: "center",
   },
   mainContent: {
-    paddingHorizontal: "10%",
-    flex: 0.8,
+    paddingHorizontal: "5%",
+    flex: 0.75,
   },
   container: {
     paddingHorizontal: "10%",

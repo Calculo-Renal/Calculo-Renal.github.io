@@ -1,3 +1,3 @@
-export default function HomeScreen() {
+export default function Index() {
   return null;
 }

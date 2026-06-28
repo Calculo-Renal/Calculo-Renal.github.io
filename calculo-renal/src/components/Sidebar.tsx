@@ -1,102 +1,88 @@
-import { View, TouchableOpacity } from "react-native";
+import {
+  ScrollView,
+  StyleProp,
+  StyleSheet,
+  View,
+  ViewStyle,
+} from "react-native";
 import { ProcessedChapterType } from "@/data/sumario";
-import { ProcessedEntryContentType, ProcessedEntryType } from "@/types/EntryType";
-import { useTheme } from "@/hooks/use-theme"
-import ContentType from "@/types/ContentType";
-import ThemedScrollView from "@/components/ThemedScrollView";
 import ThemedText from "@/components/ThemedText";
+import { Spacing } from "@/constants/theme";
+import { useTheme } from "@/hooks/use-theme";
+import TocItem from "@/components/TocItem";
 
 interface SidebarProps {
   currentChapterData: ProcessedChapterType;
   activeId: number;
   onSelectSection: (id: number) => void;
+  style?: StyleProp<ViewStyle>;
+  contentContainerStyle?: StyleProp<ViewStyle>;
 }
 
-function TocItem({
-  node,
+export default function Sidebar({
+  currentChapterData,
   activeId,
   onSelectSection,
-  depth = 0,
-  number = [1],
-}: {
-  node: ProcessedEntryType;
-  activeId: number;
-  onSelectSection: (id: number) => void;
-  depth?: number;
-  number?: number[];
-}) {
-  if (depth > 2) return null;
-
-  const isContentNode = (content: ContentType | ProcessedEntryType): content is ContentType => {
-    return "type" in content && typeof content.type === "string";
-  };
-
-  const labelNumber = number.join(".");
-
-  const isActive = node.id === activeId;
-
-  const renderTocContent = (content: ProcessedEntryContentType | ProcessedEntryContentType[] | null | undefined) => {
-    if (!content) return null;
-
-    if (Array.isArray(content)) {
-      return content.map((subNode, index) =>
-        isContentNode(subNode) ? null : (
-          <TocItem
-            key={subNode.id ?? index}
-            node={subNode}
-            activeId={activeId}
-            onSelectSection={onSelectSection}
-            depth={depth + 1}
-            number={[...number, index + 1]}
-          />
-        )
-      );
-    }
-
-    if (isContentNode(content)) return null;
-
-    return (
-      <TocItem
-        node={content}
-        activeId={activeId}
-        onSelectSection={onSelectSection}
-        depth={depth + 1}
-        number={[...number, 1]}
-      />
-    );
-  };
-  return (
-    <View style={{ marginLeft: depth * 12}}>
-      <TouchableOpacity onPress={() => onSelectSection(node.id)}>
-        <ThemedText style={isActive ? { fontWeight: "600" } : { opacity: 0.65 }}>
-          {labelNumber} {node.title}
-        </ThemedText>
-      </TouchableOpacity>
-
-      {renderTocContent(node.content)}
-    </View>
-  );
-}
-
-export default function Sidebar({ currentChapterData, activeId, onSelectSection }: SidebarProps) {
+  style,
+  contentContainerStyle,
+}: SidebarProps) {
   const theme = useTheme();
+
   return (
-    <View style={{ backgroundColor: theme.surface, flex: 1 }}>
-      <ThemedText style={{ fontWeight: "700", fontSize: 16, padding: 4}}>
-        {currentChapterData.data.title}
-      </ThemedText>
-      
-      <ThemedScrollView
-        style={{ backgroundColor: theme.surface, flex: 1 }}
-        contentContainerStyle={{ backgroundColor: theme.surface, flexGrow: 1, minHeight: "100%", padding: 4}}
+    <View
+      style={[
+        styles.sidebar,
+        {
+          backgroundColor: theme.surface,
+          borderColor: theme.border,
+        },
+        style,
+      ]}
+    >
+      <View style={styles.header}>
+        <ThemedText style={styles.kicker}>Capítulo</ThemedText>
+        <ThemedText style={styles.title}>
+          {currentChapterData.data.title}
+        </ThemedText>
+      </View>
+
+      <ScrollView
+        showsVerticalScrollIndicator={false}
+        contentContainerStyle={[styles.scrollContent, contentContainerStyle]}
       >
         <TocItem
           node={currentChapterData.data}
           activeId={activeId}
           onSelectSection={onSelectSection}
-          number={[1]}
         />
-      </ThemedScrollView>
+      </ScrollView>
     </View>
   );
 }
+
+const styles = StyleSheet.create({
+  sidebar: {
+    gap: Spacing.two,
+    borderWidth: 1,
+    borderRadius: 18,
+    padding: Spacing.three,
+  },
+  header: {
+    gap: Spacing.half,
+    marginBottom: Spacing.one,
+  },
+  kicker: {
+    fontSize: 11,
+    opacity: 0.6,
+    textTransform: "uppercase",
+    letterSpacing: 1,
+    fontWeight: "700",
+  },
+  title: {
+    fontSize: 20,
+    fontWeight: "700",
+  },
+  scrollContent: {
+    paddingBottom: Spacing.two,
+  },
+});

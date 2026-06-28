@@ -9,6 +9,7 @@ import { useColorScheme } from "react-native";
 import { useFonts } from "expo-font";
 
 import { useEffect } from "react";
+import { HeaderHeightProvider } from "@/context/HeaderHeightContext"
 
 export default function RootLayout() {
   const colorScheme = useColorScheme();
@@ -30,7 +31,9 @@ export default function RootLayout() {
 
   return (
     <ThemeProvider value={colorScheme === "dark" ? DarkTheme : DefaultTheme}>
-      <Slot />
+      <HeaderHeightProvider>
+        <Slot />
+      </HeaderHeightProvider>
     </ThemeProvider>
   );
 }
