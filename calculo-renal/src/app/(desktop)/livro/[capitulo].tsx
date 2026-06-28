@@ -16,72 +16,136 @@ import ChapterContent from "@/components/ChapterContent";
 
 export default function ChapterScreen() {
   const { capitulo } = useLocalSearchParams<{ capitulo: string }>();
-  const [activeId, setActiveId] = useState<number>(1);
+  const [activeId, setActiveId] = useState<number | null>(null);
   const scrollViewRef = useRef<ScrollView>(null);
   const sectionRefs = useRef<Map<number, View>>(new Map());
   const sectionPositions = useRef<Map<number, number>>(new Map());
-  const isAutoScrolling = useRef<boolean>(false);
+  const targetSectionId = useRef<number | null>(null);
 
   const chapterData = capitulo ? sumario[capitulo] : null;
 
   useEffect(() => {
     sectionPositions.current.clear();
     sectionRefs.current.clear();
-    setActiveId(1);
-  }, [capitulo]);
+    targetSectionId.current = null;
 
-  if (!chapterData) {
+    if (chapterData?.data) {
+      let initialId = chapterData.data.id;
+      const content = chapterData.data.content;
+
+      if (content) {
+        const children = Array.isArray(content) ? content : [content];
+        const firstSection = children.find((c: any) => !("type" in c));
+        if (firstSection) {
+          initialId = (firstSection as any).id;
+        }
+      }
+      setActiveId(initialId);
+    }
+
+    requestAnimationFrame(() => {
+      scrollViewRef.current?.scrollTo({
+        y: 0,
+        animated: false,
+      });
+    });
+  }, [capitulo, chapterData]);
+
+  if (!chapterData || activeId === null) {
     return <Redirect href={"/404" as any} />;
   }
 
-  const handleRegisterSectionRef = useCallback((id: number, ref: View | null) => {
-    if (ref) sectionRefs.current.set(id, ref);
-    else sectionRefs.current.delete(id);
-  }, []);
+  const handleRegisterSectionRef = useCallback(
+    (id: number, ref: View | null) => {
+      if (ref) {
+        sectionRefs.current.set(id, ref);
+      } else {
+        sectionRefs.current.delete(id);
+      }
+    },
+    [],
+  );
 
   const handleRegisterSectionLayout = useCallback((id: number, y: number) => {
-    sectionPositions.current.set(id, y);
+    const targetRef = sectionRefs.current.get(id);
+
+    if (targetRef && "measureLayout" in targetRef && scrollViewRef.current) {
+      targetRef.measureLayout(
+        scrollViewRef.current as any,
+        (_, top) => {
+          sectionPositions.current.set(id, top);
+        },
+        () => {},
+      );
+    } else {
+      sectionPositions.current.set(id, y);
+    }
   }, []);
 
   const handleSelectSection = useCallback((id: number) => {
-    isAutoScrolling.current = true;
+    targetSectionId.current = id;
     setActiveId(id);
 
     if (Platform.OS === "web") {
       const targetRef = sectionRefs.current.get(id);
+
       if (targetRef && "scrollIntoView" in targetRef) {
         (targetRef as unknown as HTMLElement).scrollIntoView({
           behavior: "smooth",
           block: "start",
         });
-        setTimeout(() => {
-          isAutoScrolling.current = false;
-        }, 800);
+
+        if (scrollViewRef.current) {
+          const targetY = sectionPositions.current.get(id);
+          if (targetY !== undefined) {
+            scrollViewRef.current.scrollTo({
+              y: Math.max(0, targetY - 80),
+              animated: true,
+            });
+          }
+        }
         return;
       }
     }
 
     const targetY = sectionPositions.current.get(id);
+
     if (targetY !== undefined && scrollViewRef.current) {
       scrollViewRef.current.scrollTo({
-        y: Math.max(0, targetY),
+        y: Math.max(0, targetY - 80),
         animated: true,
       });
     } else {
-      isAutoScrolling.current = false;
+      targetSectionId.current = null;
     }
   }, []);
 
   const handleScroll = useCallback(
     (event: NativeSyntheticEvent<NativeScrollEvent>) => {
-      if (isAutoScrolling.current) return;
-
       const currentY = event.nativeEvent.contentOffset.y;
+      const activationOffset = 85;
+
+      if (targetSectionId.current !== null) {
+        const destinationY = sectionPositions.current.get(
+          targetSectionId.current,
+        );
+        if (destinationY !== undefined) {
+          const targetYWithOffset = Math.max(0, destinationY - 80);
+          if (Math.abs(currentY - targetYWithOffset) <= 15) {
+            targetSectionId.current = null;
+          } else {
+            return;
+          }
+        } else {
+          targetSectionId.current = null;
+        }
+      }
+
       let nextActiveId = activeId;
       let closestTop = -Infinity;
 
       sectionPositions.current.forEach((top, id) => {
-        if (currentY >= top - 10 && top > closestTop) {
+        if (currentY >= top - activationOffset && top > closestTop) {
           closestTop = top;
           nextActiveId = id;
         }
@@ -93,10 +157,6 @@ export default function ChapterScreen() {
     },
     [activeId],
   );
-
-  const handleScrollEnd = useCallback(() => {
-    isAutoScrolling.current = false;
-  }, []);
 
   return (
     <ThemedView style={styles.screenLayout}>
@@ -113,8 +173,6 @@ export default function ChapterScreen() {
         style={styles.mainContent}
         contentContainerStyle={styles.container}
         onScroll={handleScroll}
-        onMomentumScrollEnd={handleScrollEnd}
-        onScrollAnimationEnd={handleScrollEnd}
         scrollEventThrottle={16}
       >
         <ChapterContent
@@ -140,8 +198,8 @@ const styles = StyleSheet.create({
     justifyContent: "center",
   },
   mainContent: {
-    paddingHorizontal: "5%",
     flex: 0.75,
+    paddingHorizontal: "5%",
   },
   container: {
     paddingHorizontal: "10%",

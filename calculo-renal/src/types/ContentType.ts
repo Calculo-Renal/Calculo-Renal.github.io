@@ -11,11 +11,16 @@ type ContentType =
     }
   | {
       type: "video";
+      title: string;
       data: string;
     }
   | {
       type: "interactive";
       data: ReactNode;
+    }
+  | {
+      type: "list";
+      data: (string | ContentType)[];
     }
   | {
       type: "row";

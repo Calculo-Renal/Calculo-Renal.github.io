@@ -1,112 +1,281 @@
 {
-  "title": "Introdução aos Limites e Derivadas",
+  "title": "Limites",
   "content": [
     {
-      "title": "Limites Laterais",
+      "title": "Apresentação",
+      "unnumbered": true,
       "content": [
         {
-          "type": "row",
-          "data": [
-            {
-              "type": "text",
-              "data": "Considere a função $f(x) = 2\\cos(2x+1)$, definida para $-3 \\le x \\le 1$. No vídeo ao lado, observamos o comportamento do gráfico quando $x$ se aproxima de $1$, analisando os limites laterais."
-            },
-            {
-              "type": "video",
-              "data": "limites"
-            }
-          ]
+          "type": "text",
+          "data": "Ao estudar uma função, nem sempre estamos interestedos apenas em seu valor em um determinado ponto. Muitas vezes, queremos compreender o comportamento da função quando a variável independente se aproxima de um valor específico."
         },
         {
-          "title": "Limite lateral esquerdo",
-          "content": [
-            {
-              "type": "formula",
-              "data": "\\lim_{x \\to 1^-} f(x)"
-            },
-            {
-              "type": "row",
-              "data": [
-                {
-                  "type": "col",
-                  "data": [
-                    {
-                      "type": "text",
-                      "data": "Como a função é contínua em seu domínio, o valor do limite lateral esquerdo coincide com o valor da função no ponto:"
-                    },
-                    {
-                      "type": "formula",
-                      "data": "\\lim_{x \\to 1^-} f(x) = f(1) = 2\\cos(3)."
-                    }
-                  ]
-                },
-                {
-                  "type": "video",
-                  "data": "limite-lateral-esquerdo"
-                }
-              ]
-            }
-          ]
+          "type": "text",
+          "data": "A ideia de limite surgiu justamente para responder a esse tipo de pergunta. Em vez de observar apenas um ponto isolado, passamos a analisar a tendência apresentada pela função nas suas proximidades."
         },
         {
-          "title": "Limite lateral direito",
-          "content": [
-            {
-              "type": "formula",
-              "data": "\\lim_{x \\to 1^+} f(x)"
-            },
-            {
-              "type": "text",
-              "data": "Para analisar esse limite, precisaríamos de valores de $x$ maiores que $1$."
-            },
-            {
-              "type": "text",
-              "data": "Entretanto, como a função não está definida para esses valores, não existem valores de $x$ pertencentes ao domínio, à direita de $1$."
-            },
-            {
-              "type": "text",
-              "data": "Assim, o limite lateral direito não existe."
-            }
-          ]
+          "type": "text",
+          "data": "O conceito de limite desempenha um papel fundamental no Cálculo. Ele permite estudar comportamentos locais das funções e serve de base para a construção dos conceitos de derivada e integral, que serão abordados nos próximos capítulos."
+        },
+        {
+          "type": "text",
+          "data": "Neste capítulo, nosso objetivo não é desenvolver técnicas avançadas de cálculo de limites, mas compreender intuitivamente o significado desse conceito e sua importância para o estudo das taxas de variação."
         }
       ]
     },
     {
-      "title": "Máximos Locais e a Tangente Horizontal",
+      "title": "O que é um limite?",
       "content": [
         {
           "type": "text",
-          "data": "Em um ponto de máximo local a tangente é horizontal. Nesse caso, $f'(x) = 0$."
+          "data": "De forma intuitiva, um limite descreve o valor para o qual uma função tende quando a variável independente se aproxima de determinado ponto."
+        },
+        {
+          "type": "text",
+          "data": "Em muitas situações, o comportamento da função próximo ao ponto é mais importante do que o valor da própria função nesse ponto."
+        },
+        {
+          "type": "text",
+          "data": "Essa ideia permite compreender tendências, prever comportamentos e analisar fenômenos que envolvem aproximações."
         },
         {
           "type": "video",
-          "data": "maximo"
+          "title": "O que é um limite?",
+          "data": "o-que-e-um-limite"
         }
       ]
     },
     {
-      "title": "Crescimento e Decrescimento",
+      "title": "Limites laterais",
       "content": [
         {
           "type": "text",
-          "data": "Quando a derivada é positiva, a função está crescendo. Quando a derivada é negativa, a função está decrescendo."
+          "data": "Em alguns casos, é necessário observar separadamente o comportamento da função quando nos aproximamos de um ponto pela esquerda ou pela direita."
         },
         {
-          "type": "formula",
-          "data": "f'(x) > 0 \\rightarrow \\text{função crescente}"
+          "type": "text",
+          "data": "Chamamos de limite lateral esquerdo o valor para o qual a função tende quando os valores de x se aproximam do ponto considerado por valores menores."
         },
         {
-          "type": "formula",
-          "data": "f'(x) < 0 \\rightarrow \\text{função decrescente}"
+          "type": "text",
+          "data": "De forma semelhante, o limite lateral direito corresponde ao comportamento da função quando x se aproxima por valores maiores."
+        },
+        {
+          "type": "text",
+          "data": "Quando os dois limites laterais existem e possuem o mesmo valor, dizemos que o limite da função existe naquele ponto."
         }
       ]
     },
     {
-      "title": "Função Seno e sua Derivada",
+      "title": "Exemplo 1 – Limite lateral em uma extremidade do domínio",
+      "unnumbered": true,
       "content": [
         {
           "type": "text",
-          "data": "Função seno e sua derivada: $f(x) = \\operatorname{sen}(x) \\Rightarrow f'(x) = \\cos(x)$."
+          "data": "Considere a função"
+        },
+        {
+          "type": "formula",
+          "data": "f(x)=2\\cos(2x+1)"
+        },
+        {
+          "type": "text",
+          "data": "definida apenas no intervalo $-3 \\leq x \\leq 1$."
+        },
+        {
+          "type": "text",
+          "data": "Neste exemplo, analisamos o comportamento da função quando $x$ se aproxima de $1$."
+        },
+        {
+          "type": "text",
+          "data": "Como a função está definida apenas para valores menores ou iguais a $1$, podemos nos aproximar desse ponto somente pela esquerda. Dessa forma, o limite lateral esquerdo existe e coincide com o valor da função no ponto."
+        },
+        {
+          "type": "text",
+          "data": "Por outro lado, não existem valores do domínio à direita de $x=1$. Assim, não é possível analisar o limite lateral direito."
+        },
+        {
+          "type": "text",
+          "data": "Esse exemplo mostra que a existência de um limite lateral depende não apenas da expressão da função, mas também do seu domínio."
+        },
+        {
+          "type": "video",
+          "title": "Limite lateral em uma extremidade do domínio",
+          "data": "limite-lateral-dominio"
+        }
+      ]
+    },
+    {
+      "title": "Quando o limite não existe?",
+      "content": [
+        {
+          "type": "text",
+          "data": "Nem sempre uma função possui limite em um determinado ponto."
+        },
+        {
+          "type": "text",
+          "data": "Uma situação bastante comum ocorre quando os limites laterais apresentam valores diferentes."
+        },
+        {
+          "type": "text",
+          "data": "Nesse caso, não existe um único valor para o qual a função tende e, portanto, o limite não existe."
+        },
+        {
+          "type": "text",
+          "data": "A análise dos limites apresentar valores diferentes é uma ferramenta importante para identificar esse tipo de comportamento."
+        }
+      ]
+    },
+    {
+      "title": "Exemplo 2 – Quando o limite não existe",
+      "unnumbered": true,
+      "content": [
+        {
+          "type": "text",
+          "data": "Considere a função definida por partes"
+        },
+        {
+          "type": "formula",
+          "data": "f(x) = \\begin{cases} x^2, & x < 1 \\\\ x+1, & x \\geq 1 \\end{cases}"
+        },
+        {
+          "type": "text",
+          "data": "Desejamos analisar o comportamento da função quando $x$ se aproxima de $1$."
+        },
+        {
+          "type": "text",
+          "data": "Aproximando pela esquerda, os valores da função se aproximam de $1^2=1$."
+        },
+        {
+          "type": "text",
+          "data": "Aproximando pela direita, os valores da função se aproximam de $1+1=2$."
+        },
+        {
+          "type": "text",
+          "data": "Como os limites laterais são diferentes, não existe um único valor para o qual a função tende quando $x$ se aproxima de $1$."
+        },
+        {
+          "type": "text",
+          "data": "Portanto, o limite da função quando x se aproxima de 1 não existe."
+        },
+        {
+          "type": "text",
+          "data": "Esse exemplo ilustra uma situação clássica em que os limites laterais existem, mas o limite não existe."
+        },
+        {
+          "type": "video",
+          "title": "Limites laterais em uma função definida por partes",
+          "data": "limite-lateral-partes"
+        }
+      ]
+    },
+    {
+      "title": "Limites no infinito",
+      "content": [
+        {
+          "type": "text",
+          "data": "Além de estudar o comportamento de uma função próximo a um ponto específico, também podemos investigar o que acontece quando os valores de x crescem indefinidamente."
+        },
+        {
+          "type": "text",
+          "data": "Em muitos casos, a função se aproxima cada vez mais de um determinado valor, mesmo sem atingi-lo."
+        },
+        {
+          "type": "text",
+          "data": "Esse comportamento está associado ao conceito de assíntota horizontal e permite compreender tendências de longo prazo de diversos modelos matemáticos."
+        }
+      ]
+    },
+    {
+      "title": "Exemplo 3 – Limite no infinito",
+      "unnumbered": true,
+      "content": [
+        {
+          "type": "text",
+          "data": "Considere a função"
+        },
+        {
+          "type": "formula",
+          "data": "f(x)=3-\\frac{4}{1+x^2}"
+        },
+        {
+          "type": "text",
+          "data": "À medida que os valores de $x$ aumentam, o termo $\\frac{4}{1+x^2}$ torna-se cada vez menor, aproximando-se de zero."
+        },
+        {
+          "type": "text",
+          "data": "Consequentemente, os valores da função se aproximam de $3$."
+        },
+        {
+          "type": "text",
+          "data": "Dizemos então que"
+        },
+        {
+          "type": "formula",
+          "data": "\\lim_{x\\to +\\infty} f(x)=3"
+        },
+        {
+          "type": "text",
+          "data": "A reta horizontal $y=3$ é chamada de assíntota horizontal da função."
+        },
+        {
+          "type": "text",
+          "data": "Esse exemplo mostra que uma função pode se aproximar indefinidamente de um valor sem necessariamente atingi-lo, comportamento bastante comum em modelos matemáticos utilizados para descrever fenômenos físicos, biológicos e tecnológicos."
+        }
+      ]
+    },
+    {
+      "title": "Por que estudar limites?",
+      "content": [
+        {
+          "type": "text",
+          "data": "Até aqui, utilizamos os limites para compreender tendências e comportamentos de funções."
+        },
+        {
+          "type": "text",
+          "data": "No entanto, a principal importância desse conceito está em sua aplicação na construção de novas ferramentas matemáticas."
+        },
+        {
+          "type": "text",
+          "data": "Imagine que desejamos responder perguntas como:"
+        },
+        {
+          "type": "list",
+          "data": [
+            "Qual é a velocidade exata de um veículo em determinado instante?",
+            "Em que momento uma população cresce mais rapidamente?",
+            "Como identificar pontos de máximo e mínimo de uma função?"
+          ]
+        },
+        {
+          "type": "text",
+          "data": "Todas essas questões envolvem a ideia de taxa de variação instantânea."
+        },
+        {
+          "type": "text",
+          "data": "Para construir esse conceito, precisamos analisar o que acontece quando dois pontos de uma curva ficam cada vez mais próximos. Esse processo utiliza exatamente a noção de limite studieda neste capítulo."
+        },
+        {
+          "type": "text",
+          "data": "No próximo capítulo veremos como essa ideia conduz naturalmente ao conceito de derivada, uma das ferramentas mais importantes do Cálculo."
+        }
+      ]
+    },
+    {
+      "title": "Leitura complementar",
+      "unnumbered": true,
+      "content": [
+        {
+          "type": "text",
+          "data": "Este capítulo teve como objetivo apresentar uma visão intuitiva do conceito de limite. Para aprofundar os aspectos teóricos e conhecer técnicas de cálculo de limites, recomendamos a consulta das seguintes obras:"
+        },
+        {
+          "type": "list",
+          "data": [
+            "ANTON, Howard; BIVENS, Irl; DAVIS, Stephen. Cálculo. Porto Alegre: Bookman.",
+            "STEWART, James. Cálculo. São Paulo: Cengage Learning.",
+            "THOMAS, George B.; WEIR, Maurice D.; HASS, Joel. Cálculo. São Paulo: Pearson."
+          ]
         }
       ]
     }

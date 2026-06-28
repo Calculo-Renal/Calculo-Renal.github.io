@@ -1,13 +1,25 @@
 import { ReactNode } from "react";
-import { Link, Href, usePathname } from "expo-router";
-import { Platform, Pressable, PressableProps, StyleSheet } from "react-native";
+import { Href, router, usePathname } from "expo-router";
+import {
+  Pressable,
+  StyleSheet,
+  ViewStyle,
+  Platform,
+  Linking,
+} from "react-native";
 import ThemedText from "@/components/ThemedText";
 
-type LinkPressableProps = PressableProps & {
+type PressableStyleState = {
+  hovered: boolean;
+  pressed: boolean;
+};
+
+type LinkPressableProps = {
   href: Href;
   children: string | ReactNode;
-  activeStyle?: any;
-  target?: "_blank" | "_self" | "_parent" | "_top" | (string & object);
+  style?: ViewStyle | ((state: PressableStyleState) => ViewStyle | ViewStyle[]);
+  activeStyle?: ViewStyle;
+  target?: "_blank" | "_self" | "_parent" | "_top";
 };
 
 export default function LinkPressable({
@@ -16,45 +28,47 @@ export default function LinkPressable({
   style,
   activeStyle,
   target,
-  ...props
 }: LinkPressableProps) {
   const pathname = usePathname();
-  const hrefString = typeof href === "object" ? href.pathname : href;
 
+  const hrefString = typeof href === "object" ? href.pathname : href;
   const currentSegment = pathname?.split("/").pop();
   const targetSegment = hrefString?.split("/").pop();
-
   const isActive = currentSegment === targetSegment;
 
-  const flattenedStyle = StyleSheet.flatten([style, isActive && activeStyle]);
-  const useAnchor = Platform.OS === "web" && target != null;
-  const anchorStyle = Platform.OS === "web" && target != null ? [flattenedStyle, { display: "inline-flex" }] : flattenedStyle;
+  const handlePress = () => {
+    if (target === "_blank") {
+      if (Platform.OS === "web") {
+        window.open(hrefString ?? "", "_blank");
+      } else {
+        if (hrefString) {
+          Linking.openURL(hrefString).catch(() => {});
+        }
+      }
+      return;
+    }
 
-  if (useAnchor) {
-    return (
-      <Link href={href} target={target} style={anchorStyle}>
-        {typeof children === "string" ? (
-          <ThemedText style={isActive ? { fontWeight: "bold" } : undefined}>
-            {children}
-          </ThemedText>
-        ) : (
-          children
-        )}
-      </Link>
-    );
-  }
+    router.navigate(href);
+  };
+
+  const resolveStyle = (state: PressableStyleState) => {
+    const baseStyle = typeof style === "function" ? style(state) : style;
+    return StyleSheet.flatten([baseStyle, isActive ? activeStyle : null]);
+  };
 
   return (
-    <Link href={href} target={target} asChild>
-      <Pressable style={flattenedStyle} {...props}>
-        {typeof children === "string" ? (
-          <ThemedText style={isActive ? { fontWeight: "bold" } : undefined}>
-            {children}
-          </ThemedText>
-        ) : (
-          children
-        )}
-      </Pressable>
-    </Link>
+    <Pressable
+      onPress={handlePress}
+      style={(state) => resolveStyle(state)}
+      {...(Platform.OS === "web" && target ? { dataTarget: target } : {})}
+    >
+      {typeof children === "string" ? (
+        <ThemedText style={isActive ? { fontWeight: "bold" } : undefined}>
+          {children}
+        </ThemedText>
+      ) : (
+        children
+      )}
+    </Pressable>
   );
 }

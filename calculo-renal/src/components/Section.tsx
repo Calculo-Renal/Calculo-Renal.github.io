@@ -1,31 +1,38 @@
 import React from "react";
 import { View, StyleSheet } from "react-native";
-import { ProcessedEntryContentType, ProcessedEntryType } from "@/types/EntryType";
+import { ProcessedEntryContentType } from "@/types/EntryContentType";
+import { ProcessedEntryType } from "@/types/EntryType";
 import ContentType from "@/types/ContentType";
 import ThemedText from "@/components/ThemedText";
 import MathFormula from "@/components/MathFormula";
-import VideoScreen from "@/components/VideoScreen"
+import VideoScreen from "@/components/VideoScreen";
+import RenderList from "@/components/List";
 
 interface SectionProps {
   node: ProcessedEntryType;
-  depth?: number;
   onRegisterSectionRef: (id: number, ref: View | null) => void;
   onRegisterSectionLayout?: (id: number, y: number) => void;
 }
 
-export default function Section({ node, depth = 0, onRegisterSectionRef, onRegisterSectionLayout }: SectionProps) {
+export default function Section({
+  node,
+  onRegisterSectionRef,
+  onRegisterSectionLayout,
+}: SectionProps) {
   const sectionRef = React.useRef<View>(null);
 
   React.useEffect(() => {
     onRegisterSectionRef(node.id, sectionRef.current);
   }, [node.id, onRegisterSectionRef]);
 
-  const isContentNode = (content: ContentType | ProcessedEntryType): content is ContentType => {
+  const isContentNode = (
+    content: ContentType | ProcessedEntryType,
+  ): content is ContentType => {
     return "type" in content && typeof content.type === "string";
   };
 
   const renderMixedText = (text: string) => {
-    const regex = /(\$\$.*?\$\$|\$.*?\$)/g;
+    const regex = /(\$\$.*?\$$|\$.*?\$)/g;
     const parts = text.split(regex);
 
     if (parts.length === 1) {
@@ -33,7 +40,7 @@ export default function Section({ node, depth = 0, onRegisterSectionRef, onRegis
     }
 
     return (
-      <View style={styles.mixedTextContainer}>
+      <ThemedText style={styles.paragraphText}>
         {parts.map((part, idx) => {
           const isDisplayMath = part.startsWith("$$") && part.endsWith("$$");
           const isInlineMath = part.startsWith("$") && part.endsWith("$");
@@ -44,7 +51,7 @@ export default function Section({ node, depth = 0, onRegisterSectionRef, onRegis
 
           return part ? <ThemedText key={idx}>{part}</ThemedText> : null;
         })}
-      </View>
+      </ThemedText>
     );
   };
 
@@ -55,7 +62,7 @@ export default function Section({ node, depth = 0, onRegisterSectionRef, onRegis
       case "formula":
         return <MathFormula value={content.data} />;
       case "video":
-        return <VideoScreen source={content.data} />
+        return <VideoScreen source={content.data} title={content.title} />;
       case "row":
         return (
           <View style={{ flexDirection: "row", flexWrap: "wrap" }}>
@@ -76,12 +83,20 @@ export default function Section({ node, depth = 0, onRegisterSectionRef, onRegis
             ))}
           </View>
         );
+      case "list":
+        return <RenderList data={content.data} renderContent={renderContent} />;
       default:
         return null;
     }
   };
 
-  const renderInnerNode = (content: ProcessedEntryContentType | ProcessedEntryContentType[] | null | undefined) => {
+  const renderInnerNode = (
+    content:
+      | ProcessedEntryContentType
+      | ProcessedEntryContentType[]
+      | null
+      | undefined,
+  ) => {
     if (!content) return null;
 
     if (Array.isArray(content)) {
@@ -92,11 +107,10 @@ export default function Section({ node, depth = 0, onRegisterSectionRef, onRegis
           <Section
             key={subNode.id}
             node={subNode}
-            depth={depth + 1}
             onRegisterSectionRef={onRegisterSectionRef}
             onRegisterSectionLayout={onRegisterSectionLayout}
           />
-        )
+        ),
       );
     }
 
@@ -107,7 +121,6 @@ export default function Section({ node, depth = 0, onRegisterSectionRef, onRegis
     return (
       <Section
         node={content}
-        depth={depth + 1}
         onRegisterSectionRef={onRegisterSectionRef}
         onRegisterSectionLayout={onRegisterSectionLayout}
       />
@@ -118,7 +131,7 @@ export default function Section({ node, depth = 0, onRegisterSectionRef, onRegis
     <View
       ref={sectionRef}
       nativeID={String(node.id)}
-      style={{ marginLeft: depth * 12, marginVertical: 8 }}
+      style={{ marginLeft: node.depth * 12, marginVertical: 8 }}
       onLayout={(event) => {
         if (onRegisterSectionLayout) {
           onRegisterSectionLayout(node.id, event.nativeEvent.layout.y);
@@ -127,25 +140,35 @@ export default function Section({ node, depth = 0, onRegisterSectionRef, onRegis
     >
       <ThemedText
         style={[
-          depth === 0 && { fontSize: 24, fontWeight: "700" },
-          depth === 1 && { fontSize: 20, fontWeight: "600" },
-          depth >= 2 && { fontSize: 16, fontWeight: "500" },
+          node.depth === 0 && {
+            fontSize: 24,
+            fontWeight: "700",
+            marginBottom: 12,
+          },
+          node.depth === 1 && {
+            fontSize: 20,
+            fontWeight: "600",
+            marginBottom: 8,
+          },
+          node.depth >= 2 && {
+            fontSize: 16,
+            fontWeight: "500",
+            marginBottom: 4,
+          },
         ]}
       >
+        {node.label && node.depth !== 0 ? `${node.label} ` : ""}
         {node.title}
       </ThemedText>
 
-      <View style={{ marginTop: 4 }}>
-        {renderInnerNode(node.content)}
-      </View>
+      <View style={{ gap: 16 }}>{renderInnerNode(node.content)}</View>
     </View>
   );
 }
 
 const styles = StyleSheet.create({
-  mixedTextContainer: {
-    flexDirection: "row",
-    flexWrap: "wrap",
-    alignItems: "center",
-  }
+  paragraphText: {
+    fontSize: 16,
+    lineHeight: 24,
+  },
 });

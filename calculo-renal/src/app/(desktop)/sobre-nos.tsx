@@ -1,102 +1,67 @@
 import LinkPressable from "@/components/LinkPressable";
 import ThemedText from "@/components/ThemedText";
 import ThemedScrollView from "@/components/ThemedScrollView";
-import { StyleSheet } from "react-native";
+import { StyleSheet, View } from "react-native";
 import { Image } from "expo-image";
-import { View } from "react-native";
+import { useTheme } from "@/hooks/use-theme";
 
 export default function AboutUsPage() {
+  const theme = useTheme();
+
   return (
     <ThemedScrollView
       contentInsetAdjustmentBehavior="automatic"
-      contentContainerStyle={styles.index}
+      contentContainerStyle={[styles.index, { backgroundColor: theme.background }]}
     >
       <ThemedText style={styles.text}>
         A motivação para criação deste site foi um projeto de extensão proposto
         por nossa orientadora, Izabela, que visava ajudar os alunos do ensino
         técnico e da graduação na aprendizagem da disciplina de Cálculo. Para
         mais informações sobre nós, orientandos, clique nas imagens abaixo para
-        ser direcionado ás nosssas paginas do GitHub.
+        ser direcionado às nossas páginas do GitHub.
       </ThemedText>
-      <ThemedText style={styles.title}>Orientadora</ThemedText>
+      
+      <ThemedText style={[styles.title, { color: theme.text }]}>Orientadora</ThemedText>
       <View style={styles.item}>
         <Image
           source={require("@/assets/images/sobre-nos/izabela-pfp.png")}
           style={styles.image}
         />
-        <ThemedText style={styles.name}>Izabela Marques</ThemedText>
+        <ThemedText style={[styles.name, { color: theme.text }]}>Izabela Marques</ThemedText>
       </View>
-      <ThemedText style={styles.title}>Orientandos</ThemedText>
+
+      <ThemedText style={[styles.title, { color: theme.text }]}>Orientandos</ThemedText>
       <View style={styles.row}>
-        <View style={styles.item}>
-          <LinkPressable
-            href="https://github.com/frxd-sloureiro"
-            target="_blank"
-            style={styles.link}
-          >
-            <Image
-              source={{ uri: "https://github.com/frxd-sloureiro.png" }}
-              style={styles.image}
-            />
-            <ThemedText style={styles.name}>Frederico Loureiro</ThemedText>
-          </LinkPressable>
-        </View>
-
-        <View style={styles.item}>
-          <LinkPressable
-            href="https://github.com/JeanC4rlo"
-            target="_blank"
-            style={styles.link}
-          >
-            <Image
-              source={{ uri: "https://github.com/JeanC4rlo.png" }}
-              style={styles.image}
-            />
-            <ThemedText style={styles.name}>Jean Carlo</ThemedText>
-          </LinkPressable>
-        </View>
-
-        <View style={styles.item}>
-          <LinkPressable
-            href="https://github.com/GuilhermeMalard"
-            target="_blank"
-            style={styles.link}
-          >
-            <Image
-              source={{ uri: "https://github.com/GuilhermeMalard.png" }}
-              style={styles.image}
-            />
-            <ThemedText style={styles.name}>Guilherme Malard</ThemedText>
-          </LinkPressable>
-        </View>
-
-        <View style={styles.item}>
-          <LinkPressable
-            href="https://github.com/pedrosoares01"
-            target="_blank"
-            style={styles.link}
-          >
-            <Image
-              source={{ uri: "https://github.com/pedrosoares01.png" }}
-              style={styles.image}
-            />
-            <ThemedText style={styles.name}>Pedro Soares</ThemedText>
-          </LinkPressable>
-        </View>
-
-        <View style={styles.item}>
-          <LinkPressable
-            href="https://github.com/pedropsaraiva"
-            target="_blank"
-            style={styles.link}
-          >
-            <Image
-              source={{ uri: "https://github.com/pedropsaraiva.png" }}
-              style={styles.image}
-            />
-            <ThemedText style={styles.name}>Pedro Peixoto</ThemedText>
-          </LinkPressable>
-        </View>
+        {[
+          { username: "frxd-sloureiro", name: "Frederico Loureiro" },
+          { username: "JeanC4rlo", name: "Jean Carlo" },
+          { username: "GuilhermeMalard", name: "Guilherme Malard" },
+          { username: "pedrosoares01", name: "Pedro Soares" },
+          { username: "pedropsaraiva", name: "Pedro Peixoto" },
+        ].map((dev) => (
+          <View key={dev.username} style={styles.item}>
+            <LinkPressable
+              href={`https://github.com/${dev.username}`}
+              target="_blank"
+              style={({ hovered, pressed }: { hovered: boolean; pressed: boolean }) => [
+                styles.link,
+                {
+                  backgroundColor: pressed 
+                    ? theme.surfaceActive 
+                    : hovered 
+                      ? theme.surfaceActive 
+                      : "transparent"
+                }
+              ]}
+            >
+              <Image
+                source={{ uri: `https://github.com/${dev.username}.png` }}
+                style={styles.image}
+              />
+              <ThemedText style={[styles.name, { color: theme.text }]}>{dev.name}</ThemedText>
+            </LinkPressable>
+          </View>
+        ))}
       </View>
     </ThemedScrollView>
   );
@@ -128,6 +93,8 @@ const styles = StyleSheet.create({
   link: {
     flexDirection: "column",
     alignItems: "center",
+    padding: 12,
+    borderRadius: 16,
   },
   item: {
     alignItems: "center",
@@ -139,6 +106,6 @@ const styles = StyleSheet.create({
     textAlign: "center",
   },
   text: {
-    fontSize: 18,
+    fontSize: 16,
   },
-})
+});

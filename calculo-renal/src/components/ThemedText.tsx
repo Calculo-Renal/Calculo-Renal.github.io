@@ -12,7 +12,8 @@ export default function ThemedText({
       style={[
         {
           color: theme.text,
-          fontFamily: "DM Sans"
+          fontFamily: "DM Sans",
+          fontSize: 16,
         },
         style,
       ]}

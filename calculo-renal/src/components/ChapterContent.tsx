@@ -13,7 +13,6 @@ export default function ChapterContent({ chapterData, onRegisterSectionRef, onRe
     <View style={styles.container}>
       <Section
         node={chapterData.data}
-        depth={0}
         onRegisterSectionRef={onRegisterSectionRef}
         onRegisterSectionLayout={onRegisterSectionLayout}
       />

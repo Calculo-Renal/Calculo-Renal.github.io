@@ -5,6 +5,7 @@ import {
   View,
   ViewStyle,
 } from "react-native";
+import { useEffect, useRef } from "react";
 import { ProcessedChapterType } from "@/data/sumario";
 import ThemedText from "@/components/ThemedText";
 import { Spacing } from "@/constants/theme";
@@ -27,31 +28,40 @@ export default function Sidebar({
   contentContainerStyle,
 }: SidebarProps) {
   const theme = useTheme();
+  const rootNode = currentChapterData.data;
+  const scrollRef = useRef<ScrollView>(null);
+
+  useEffect(() => {
+    requestAnimationFrame(() => {
+      scrollRef.current?.scrollTo({
+        y: 0,
+        animated: false,
+      });
+    });
+  }, [currentChapterData]);
 
   return (
     <View
       style={[
         styles.sidebar,
-        {
-          backgroundColor: theme.surface,
-          borderColor: theme.border,
-        },
+        { backgroundColor: theme.surface, borderColor: theme.border },
         style,
       ]}
     >
       <View style={styles.header}>
-        <ThemedText style={styles.kicker}>Capítulo</ThemedText>
-        <ThemedText style={styles.title}>
-          {currentChapterData.data.title}
+        <ThemedText style={styles.kicker}>
+          {rootNode.label ? `Capítulo ${rootNode.label}` : "Capítulo"}
         </ThemedText>
+        <ThemedText style={styles.title}>{rootNode.title}</ThemedText>
       </View>
 
       <ScrollView
+        ref={scrollRef}
         showsVerticalScrollIndicator={false}
         contentContainerStyle={[styles.scrollContent, contentContainerStyle]}
       >
         <TocItem
-          node={currentChapterData.data}
+          node={rootNode}
           activeId={activeId}
           onSelectSection={onSelectSection}
         />
@@ -72,14 +82,14 @@ const styles = StyleSheet.create({
     marginBottom: Spacing.one,
   },
   kicker: {
-    fontSize: 11,
+    fontSize: 12,
     opacity: 0.6,
     textTransform: "uppercase",
     letterSpacing: 1,
     fontWeight: "700",
   },
   title: {
-    fontSize: 20,
+    fontSize: 24,
     fontWeight: "700",
   },
   scrollContent: {
