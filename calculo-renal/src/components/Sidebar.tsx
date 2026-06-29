@@ -74,7 +74,7 @@ const styles = StyleSheet.create({
   sidebar: {
     gap: Spacing.two,
     borderWidth: 1,
-    borderRadius: 18,
+    borderRadius: 10,
     padding: Spacing.three,
   },
   header: {
