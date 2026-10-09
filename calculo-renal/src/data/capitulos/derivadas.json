@@ -1,0 +1,511 @@
+{
+  "title": "Derivadas",
+  "content": [
+    {
+      "title": "Apresentação",
+      "unnumbered": true,
+      "content": [
+        {
+          "type": "text",
+          "data": "No capítulo anterior, estudamos o conceito de limite e vimos como ele permite analisar o comportamento de uma função quando nos aproximamos de determinado ponto."
+        },
+        {
+          "type": "text",
+          "data": "Agora, vamos utilizar essa ideia para estudar como uma função varia."
+        },
+        {
+          "type": "text",
+          "data": "Em muitas situações, não basta conhecer o valor de uma função. Queremos saber se ela está crescendo ou decrescendo, com que rapidez seus valores mudam ou em quais pontos atinge valores máximos e mínimos."
+        },
+        {
+          "type": "text",
+          "data": "A derivada é uma ferramenta matemática que nos ajuda a responder a essas perguntas."
+        },
+        {
+          "type": "text",
+          "data": "Neste capítulo, vamos compreender o conceito de derivada, sua interpretação geométrica e sua relação com o comportamento das funções. Para isso, utilizaremos exemplos e animações que permitem acompanhar visualmente essas ideias."
+        }
+      ]
+    },
+    {
+      "title": "Taxa de variação média",
+      "content": [
+        {
+          "type": "text",
+          "data": "Considere uma função $f(x)$ e dois valores distintos da variável independente, $x_1$ e $x_2$."
+        },
+        {
+          "type": "text",
+          "data": "A taxa de variação média da função nesse intervalo é dada por"
+        },
+        {
+          "type": "formula",
+          "data": "\\frac{\\Delta y}{\\Delta x}=\\frac{f(x_2)-f(x_1)}{x_2-x_1}"
+        },
+        {
+          "type": "text",
+          "data": "Essa razão indica quanto, em média, o valor da função varia em relação à variação de $x$."
+        },
+        {
+          "type": "text",
+          "data": "Geometricamente, a taxa de variação média corresponde à inclinação da reta secante que passa pelos pontos"
+        },
+        {
+          "type": "formula",
+          "data": "P=(x_1,f(x_1))\\;e\\;Q=(x_2,f(x_2))"
+        },
+        {
+          "type": "text",
+          "data": "Uma reta secante é uma reta que passa por dois pontos distintos do gráfico de uma função."
+        }
+      ]
+    },
+    {
+      "title": "Da reta secante à reta tangente",
+      "content": [
+        {
+          "type": "text",
+          "data": "Imagine que mantemos o ponto $P$ fixo e aproximamos o ponto $Q$ cada vez mais de $P$."
+        },
+        {
+          "type": "text",
+          "data": "À medida que esses pontos se aproximam, a reta secante tende a uma posição limite: a reta tangente ao gráfico no ponto $P$."
+        },
+        {
+          "type": "text",
+          "data": "A inclinação dessa reta tangente representa a taxa de variação instantânea da função naquele ponto."
+        }
+      ]
+    },
+    {
+      "title": "Exemplo 1 – Da reta secante à reta tangente",
+      "unnumbered": true,
+      "content": [
+        {
+          "type": "text",
+          "data": "Considere a função"
+        },
+        {
+          "type": "formula",
+          "data": "f(x)=x^2"
+        },
+        {
+          "type": "text",
+          "data": "Escolhemos dois pontos sobre a parábola: um ponto fixo $P$, correspondente a $x_0$, e um ponto móvel $Q$, correspondente a $x$."
+        },
+        {
+          "type": "text",
+          "data": "As coordenadas desses pontos são"
+        },
+        {
+          "type": "formula",
+          "data": "P=(x_0,f(x_0))\\;e\\;Q=(x,f(x))"
+        },
+        {
+          "type": "text",
+          "data": "A reta que passa por $P$ e $Q$ é uma reta secante ao gráfico da função. Sua inclinação é dada por"
+        },
+        {
+          "type": "formula",
+          "data": "m=\\frac{\\Delta y}{\\Delta x}"
+        },
+        {
+          "type": "text",
+          "data": "em que"
+        },
+        {
+          "type": "formula",
+          "data": "\\Delta x=x-x_0/\\Delta y=f(x)-f(x_0)"
+        },
+        {
+          "type": "text",
+          "data": "Mantendo o ponto $P$ fixo, aproximamos o ponto $Q$ cada vez mais de $P$. Nesse processo, $x$ se aproxima de $x_0$ e, consequentemente, $\\Delta x\\to 0$."
+        },
+        {
+          "type": "text",
+          "data": "À medida que os pontos se aproximam, a reta secante tende à reta tangente ao gráfico no ponto $P$."
+        },
+        {
+          "type": "text",
+          "data": "Esse processo permite compreender geometricamente a ideia de derivada: a inclinação da reta tangente é obtida como o limite das inclinações das retas secantes, quando esse limite existe."
+        },
+        {
+          "type": "video",
+          "title": "Da reta secante à reta tangente",
+          "data": "derivadas-ex-1"
+        }
+      ]
+    },
+    {
+      "title": "O que é a derivada?",
+      "content": [
+        {
+          "type": "text",
+          "data": "A derivada de uma função em determinado ponto representa sua taxa de variação instantânea."
+        },
+        {
+          "type": "text",
+          "data": "Para compreender matematicamente essa ideia, considere um ponto $x=a$ e outro ponto próximo, $x=a+h$."
+        },
+        {
+          "type": "text",
+          "data": "A taxa de variação média entre esses pontos é"
+        },
+        {
+          "type": "formula",
+          "data": "\\frac{f(a+h)-f(a)}{h}"
+        },
+        {
+          "type": "text",
+          "data": "Quando $h$ tende a zero, obtemos a definição de derivada:"
+        },
+        {
+          "type": "formula",
+          "data": "f'(a)=\\lim_{h\\to 0}\\frac{f(a+h)-f(a)}{h}"
+        },
+        {
+          "type": "text",
+          "data": "Esse limite, quando existe e é finito, fornece a inclinação da reta tangente ao gráfico da função no ponto considerado."
+        },
+        {
+          "type": "text",
+          "data": "A notação $f'(a)$ é lida como derivada de $f$ no ponto $a$."
+        },
+        {
+          "type": "text",
+          "data": "Quando a derivada existe nos pontos de um intervalo, podemos considerar a função derivada, representada por $f'(x)$."
+        }
+      ]
+    },
+    {
+      "title": "Exemplo 2 – A derivada como inclinação da reta tangente",
+      "unnumbered": true,
+      "content": [
+        {
+          "type": "text",
+          "data": "Considere novamente a função"
+        },
+        {
+          "type": "formula",
+          "data": "f(x)=x^2"
+        },
+        {
+          "type": "text",
+          "data": "Sua derivada é"
+        },
+        {
+          "type": "formula",
+          "data": "f'(x)=2x"
+        },
+        {
+          "type": "text",
+          "data": "Isso significa que a inclinação da reta tangente depende do ponto considerado."
+        },
+        {
+          "type": "text",
+          "data": "Por exemplo: em $x=-1$, temos $f'(-1)=-2$; em $x=0$, temos $f'(0)=0$; e em $x=1$, temos $f'(1)=2$."
+        },
+        {
+          "type": "text",
+          "data": "A animação a seguir mostra um ponto percorrendo o gráfico da função $f(x)=x^2$, acompanhado pela reta tangente à curva. Observe como a inclinação da reta tangente varia à medida que o ponto se movimenta sobre a parábola. O valor da derivada é apresentado em cada posição, permitindo relacionar o sinal e o valor de $f'(x)$ à inclinação da tangente."
+        },
+        {
+          "type": "video",
+          "title": "A derivada como inclinação da reta tangente",
+          "data": "derivadas-ex-2"
+        }
+      ]
+    },
+    {
+      "title": "Derivada e pontos de máximo e mínimo",
+      "content": [
+        {
+          "type": "text",
+          "data": "Ao observar o gráfico de uma função, podemos identificar pontos em que ela deixa de crescer e passa a decrescer, ou deixa de decrescer e passa a crescer."
+        },
+        {
+          "type": "text",
+          "data": "Esses pontos podem corresponder a máximos ou mínimos locais."
+        },
+        {
+          "type": "text",
+          "data": "Quando uma função possui derivada em um ponto de máximo ou mínimo local situado no interior de seu domínio, essa derivada é igual a zero."
+        },
+        {
+          "type": "text",
+          "data": "Geometricamente, isso significa que a reta tangente é horizontal."
+        }
+      ]
+    },
+    {
+      "title": "Exemplo 3 – Derivada em um ponto de máximo",
+      "unnumbered": true,
+      "content": [
+        {
+          "type": "text",
+          "data": "Considere a função"
+        },
+        {
+          "type": "formula",
+          "data": "f(x)=-x^2+4x+3"
+        },
+        {
+          "type": "text",
+          "data": "Seu gráfico é uma parábola com concavidade voltada para baixo e vértice no ponto $(2,7)$."
+        },
+        {
+          "type": "text",
+          "data": "A derivada é"
+        },
+        {
+          "type": "formula",
+          "data": "f'(x)=-2x+4"
+        },
+        {
+          "type": "text",
+          "data": "No vértice da parábola, temos"
+        },
+        {
+          "type": "formula",
+          "data": "f'(2)=0"
+        },
+        {
+          "type": "text",
+          "data": "Portanto, a reta tangente nesse ponto é horizontal. A animação mostra um ponto percorrendo a parábola, acompanhado pela reta tangente. Observe o que acontece quando o ponto atinge o vértice."
+        },
+        {
+          "type": "video",
+          "title": "Derivada nula em um ponto de máximo",
+          "data": "derivadas-ex-3"
+        },
+        {
+          "type": "text",
+          "data": "É importante observar que a condição $f'(a)=0$, sozinha, não garante que exista um máximo ou mínimo local. Ela também pode ocorrer em outros pontos do gráfico."
+        }
+      ]
+    },
+    {
+      "title": "Derivada e crescimento de uma função",
+      "content": [
+        {
+          "type": "text",
+          "data": "A derivada também permite identificar os intervalos em que uma função é crescente ou decrescente."
+        },
+        {
+          "type": "text",
+          "data": "Quando a derivada é positiva em um intervalo, a função é crescente nesse intervalo. Quando a derivada é negativa em um intervalo, a função é decrescente."
+        },
+        {
+          "type": "formula",
+          "data": "f'(x)>0 \\quad\\Rightarrow\\quad f \\text{ é crescente }\\newline\\text{ e }\\newline f'(x)<0 \\quad\\Rightarrow\\quad f \\text{ é decrescente}"
+        },
+        {
+          "type": "text",
+          "data": "considerando intervalos nos quais essas condições são satisfeitas."
+        }
+      ]
+    },
+    {
+      "title": "Exemplo 4 – O sinal da derivada e o comportamento da função",
+      "unnumbered": true,
+      "content": [
+        {
+          "type": "text",
+          "data": "Considere a função"
+        },
+        {
+          "type": "formula",
+          "data": "f(x)=x^3-3x"
+        },
+        {
+          "type": "text",
+          "data": "Sua derivada é"
+        },
+        {
+          "type": "formula",
+          "data": "f'(x)=3x^2-3"
+        },
+        {
+          "type": "text",
+          "data": "Observe que"
+        },
+        {
+          "type": "formula",
+          "data": "f'(x)=3(x-1)(x+1)"
+        },
+        {
+          "type": "text",
+          "data": "A derivada é positiva quando $x<-1$ ou $x>1$, e negativa quando $-1<x<1$. Portanto, a função é crescente nos intervalos"
+        },
+        {
+          "type": "formula",
+          "data": "(-\\infty,-1) \\quad\\text{e}\\quad (1,+\\infty)"
+        },
+        {
+          "type": "text",
+          "data": "e decrescente no intervalo"
+        },
+        {
+          "type": "formula",
+          "data": "(-1,1)"
+        },
+        {
+          "type": "text",
+          "data": "Nos pontos $x=-1$ e $x=1$, a derivada é igual a zero. Na animação, observe como a inclinação da reta tangente permite identificar os trechos nos quais a função é crescente (representados em verde) e decrescente (em vermelho)."
+        },
+        {
+          "type": "video",
+          "title": "O sinal da derivada e o crescimento da função",
+          "data": "derivadas-ex-4"
+        }
+      ]
+    },
+    {
+      "title": "Comparando uma função e sua derivada",
+      "content": [
+        {
+          "type": "text",
+          "data": "Até aqui, utilizamos a derivada para analisar a inclinação da reta tangente e identificar intervalos de crescimento e decrescimento."
+        },
+        {
+          "type": "text",
+          "data": "Outra maneira de compreender essa relação é observar, simultaneamente, os gráficos de uma função e de sua derivada."
+        }
+      ]
+    },
+    {
+      "title": "Exemplo 5 – Gráficos de uma função e de sua derivada",
+      "unnumbered": true,
+      "content": [
+        {
+          "type": "text",
+          "data": "Considere"
+        },
+        {
+          "type": "formula",
+          "data": "f(x)=x^2"
+        },
+        {
+          "type": "text",
+          "data": "e sua derivada"
+        },
+        {
+          "type": "formula",
+          "data": "f'(x)=2x"
+        },
+        {
+          "type": "text",
+          "data": "O gráfico de $f$ é uma parábola, enquanto o gráfico de $f'$ é uma reta. Quando $x<0$, a derivada é negativa, e a parábola é decrescente. Em $x=0$, a derivada é nula, e a função atinge seu valor mínimo. Quando $x>0$, a derivada é positiva, e a parábola é crescente."
+        },
+        {
+          "type": "text",
+          "data": "A animação apresenta os gráficos da função e de sua derivada lado a lado. Observe como os pontos se movimentam simultaneamente, mantendo a mesma coordenada $x$, e como o sinal da derivada está relacionado ao crescimento e ao decrescimento da função."
+        },
+        {
+          "type": "video",
+          "title": "Comparação entre uma função e sua derivada",
+          "data": "derivadas-ex-5"
+        }
+      ]
+    },
+    {
+      "title": "A derivada da função seno",
+      "content": [
+        {
+          "type": "text",
+          "data": "A relação entre uma função e sua derivada também pode ser observada em funções trigonométricas."
+        },
+        {
+          "type": "text",
+          "data": "Um exemplo importante é a função seno, cuja derivada, quando trabalhamos com ângulos em radianos, é a função cosseno."
+        }
+      ]
+    },
+    {
+      "title": "Exemplo 6 – A função seno e sua derivada",
+      "unnumbered": true,
+      "content": [
+        {
+          "type": "text",
+          "data": "Considere"
+        },
+        {
+          "type": "formula",
+          "data": "f(x)=\\operatorname{sen}(x)"
+        },
+        {
+          "type": "text",
+          "data": "Sua derivada é"
+        },
+        {
+          "type": "formula",
+          "data": "f'(x)=\\cos(x)"
+        },
+        {
+          "type": "text",
+          "data": "Isso significa que o valor do cosseno determina a inclinação da reta tangente ao gráfico do seno em cada ponto. Nos pontos em que o seno atinge um máximo ou mínimo, a derivada é igual a zero."
+        },
+        {
+          "type": "text",
+          "data": "Por exemplo, em"
+        },
+        {
+          "type": "formula",
+          "data": "x=\\frac{\\pi}{2}"
+        },
+        {
+          "type": "text",
+          "data": "temos"
+        },
+        {
+          "type": "formula",
+          "data": "f'\\left(\\frac{\\pi}{2}\\right)=\\cos\\left(\\frac{\\pi}{2}\\right)=0"
+        },
+        {
+          "type": "text",
+          "data": "Nesse ponto, a função seno atinge um máximo local. Na animação, os gráficos do seno e do cosseno são apresentados simultaneamente. Observe que, quando a função seno atinge um máximo ou mínimo local, sua reta tangente é horizontal. Nesse mesmo instante, o ponto correspondente no gráfico do cosseno está sobre o eixo horizontal, indicando que a derivada é igual a zero."
+        },
+        {
+          "type": "video",
+          "title": "A função seno e sua derivada",
+          "data": "derivadas-ex-6"
+        }
+      ]
+    },
+    {
+      "title": "Por que estudar derivadas?",
+      "content": [
+        {
+          "type": "text",
+          "data": "Neste capítulo, vimos que a derivada permite compreender como uma função varia e interpretar geometricamente essa variação por meio da inclinação da reta tangente."
+        },
+        {
+          "type": "text",
+          "data": "Essas ideias não se restringem ao estudo de gráficos. Elas podem ser utilizadas para analisar situações como o movimento de um veículo, o crescimento de uma população ou a variação de uma grandeza física ao longo do tempo."
+        },
+        {
+          "type": "text",
+          "data": "No próximo capítulo, vamos explorar algumas dessas aplicações, mostrando como a derivada pode ajudar a compreender situações concretas."
+        }
+      ]
+    },
+    {
+      "title": "Leitura complementar",
+      "unnumbered": true,
+      "content": [
+        {
+          "type": "text",
+          "data": "Este capítulo apresentou uma introdução ao conceito de derivada e suas interpretações geométricas. Para aprofundar os aspectos teóricos e conhecer técnicas de derivação, recomendamos a consulta das seguintes obras:"
+        },
+        {
+          "type": "list",
+          "data": [
+            "ANTON, Howard; BIVENS, Irl; DAVIS, Stephen. Cálculo. Porto Alegre: Bookman.",
+            "STEWART, James. Cálculo. São Paulo: Cengage Learning.",
+            "THOMAS, George B.; WEIR, Maurice D.; HASS, Joel. Cálculo. São Paulo: Pearson."
+          ]
+        }
+      ]
+    }
+  ]
+}

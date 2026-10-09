@@ -2,6 +2,7 @@ import ChapterType from "@/types/ChapterType";
 import { EntryType, ProcessedEntryType } from "@/types/EntryType";
 import { processJSON } from "@/utils/processJSON";
 import limitesJson from "./capitulos/limites.json";
+import derivadasJson from "./capitulos/derivadas.json";
 
 export type ProcessedChapterType = Omit<ChapterType, "data"> & {
   id: number;
@@ -12,6 +13,10 @@ const rawSumario = {
   limites: {
     chapter: "limites",
     data: limitesJson as EntryType,
+  },
+  derivadas: {
+    chapter: "derivadas",
+    data: derivadasJson as EntryType,
   },
 } satisfies Record<string, { chapter: string; data: EntryType }>;
 
