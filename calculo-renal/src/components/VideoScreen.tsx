@@ -10,7 +10,7 @@ interface VideoScreenProps {
 
 export default function VideoScreen({ source, title }: VideoScreenProps) {
   const videoSources: Record<string, number> = {
-    "o-que-e-um-limite": require("@/assets/videos/limites/o-que-e-um-limite.mp4"),
+    "limite-infinito": require("@/assets/videos/limites/limite-infinito.mp4"),
     "limite-lateral-dominio": require("@/assets/videos/limites/limite-lateral-dominio.mp4"),
     "limite-lateral-partes": require("@/assets/videos/limites/limite-lateral-partes.mp4"),
     "derivadas-ex-1": require("@/assets/videos/derivadas/Video_Cap_2_Ex_1.mp4"),

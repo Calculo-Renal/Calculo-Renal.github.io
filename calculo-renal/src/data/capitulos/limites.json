@@ -37,11 +37,6 @@
         {
           "type": "text",
           "data": "Essa ideia permite compreender tendências, prever comportamentos e analisar fenômenos que envolvem aproximações."
-        },
-        {
-          "type": "video",
-          "title": "O que é um limite?",
-          "data": "o-que-e-um-limite"
         }
       ]
     },
@@ -221,6 +216,11 @@
         {
           "type": "text",
           "data": "Esse exemplo mostra que uma função pode se aproximar indefinidamente de um valor sem necessariamente atingi-lo, comportamento bastante comum em modelos matemáticos utilizados para descrever fenômenos físicos, biológicos e tecnológicos."
+        },
+        {
+          "type": "video",
+          "title": "Limite no infinito e assíntota horizontal",
+          "data": "limite-infinito"
         }
       ]
     },
