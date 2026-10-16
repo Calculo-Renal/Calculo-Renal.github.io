@@ -8,7 +8,7 @@ interface Props {
 const { href, variant = 'default', ...attributes } = Astro.props;
 const styles = {
   default: '',
-  navigation: 'text-info-secondary transition-colors hover:text-primary',
+  navigation: 'cursor-pointer text-info-secondary transition-colors hover:text-primary',
   chapter: 'flex items-center gap-3 rounded-md px-3 py-2 font-sans text-sm text-info-secondary transition-colors hover:bg-surface hover:text-info',
   'chapter-active': 'flex items-center gap-3 rounded-md px-3 py-2 font-sans text-sm transition-colors bg-surface-active text-info',
   'chapter-card': 'group flex items-start gap-4 rounded-lg border border-border bg-surface p-4 transition-colors hover:border-primary hover:bg-surface-active',

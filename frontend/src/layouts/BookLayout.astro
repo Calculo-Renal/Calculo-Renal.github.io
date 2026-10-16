@@ -17,9 +17,9 @@ import "@fontsource-variable/funnel-display";
         <meta name="generator" content={Astro.generator} />
         <title>Cálculo Renal</title>
     </head>
-    <body class="flex h-dvh flex-col m-0 overflow-hidden bg-background text-info transition-colors duration-200">
+    <body class="flex min-h-dvh flex-col m-0 bg-background text-info transition-colors duration-200 md:h-dvh md:overflow-hidden">
         <Header />
-        <main class="flex min-h-0 flex-1 flex-col overflow-hidden px-[20%] py-8">
+        <main class="flex flex-1 flex-col px-4 py-6 sm:px-8 sm:py-8 md:min-h-0 md:overflow-hidden lg:px-[20%]">
             <Stack fill>
                 <slot />
             </Stack>
@@ -30,9 +30,10 @@ import "@fontsource-variable/funnel-display";
 <script>
     const reader = document.querySelector<HTMLElement>('[data-book-reader]');
     const navigation = document.querySelector<HTMLElement>('[data-book-navigation]');
+    const desktopMedia = window.matchMedia('(min-width: 768px)');
 
     const forwardWheelToBook = (event: WheelEvent) => {
-        if (!reader) return;
+        if (!reader || !desktopMedia.matches) return;
 
         const navigationRight = navigation?.getBoundingClientRect().right ?? window.innerWidth / 2;
         const readerLeft = reader.getBoundingClientRect().left;

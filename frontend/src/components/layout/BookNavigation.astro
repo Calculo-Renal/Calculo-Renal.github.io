@@ -3,6 +3,7 @@ import BookChapterLink from '@/components/layout/BookChapterLink.astro';
 import BookTocLink from '@/components/layout/BookTocLink.astro';
 import Heading from '@/components/ui/Heading.astro';
 import type { Chapter } from '@/types/Chapter';
+import { ChevronDown, ChevronUp } from '@lucide/astro';
 
 interface Props {
   chapters: Chapter[];
@@ -17,29 +18,56 @@ interface Props {
 const { chapters, currentId, headings } = Astro.props;
 ---
 
-<aside data-book-navigation class="book-navigation flex min-h-0 flex-col gap-4 self-start overflow-y-auto border-border md:h-full md:border-r md:pr-6">
-  <Heading level={2}>Capítulos</Heading>
-  <nav aria-label="Navegação do livro" class="flex flex-col gap-2">
-    {chapters.map((chapter) => (
-      <div class="flex flex-col gap-1">
-        <BookChapterLink
-          chapter={chapter}
-          variant={chapter.id === currentId ? 'active' : 'default'}
-        />
+<aside data-book-navigation class="book-navigation flex min-h-0 flex-col gap-4 self-start overflow-y-auto border-b border-border pb-4 md:h-full md:border-b-0 md:border-r md:pb-0 md:pr-6">
+  <button
+    type="button"
+    class="flex cursor-pointer items-center justify-between text-left md:pointer-events-none"
+    aria-expanded="false"
+    aria-controls="book-navigation-content"
+    data-book-navigation-toggle
+  >
+    <Heading level={2}>Capítulos</Heading>
+    <span class="md:hidden" aria-hidden="true">
+      <ChevronDown size={20} data-chevron-down />
+      <ChevronUp size={20} class="hidden" data-chevron-up />
+    </span>
+  </button>
+  <div id="book-navigation-content" class="hidden md:block" data-book-navigation-content>
+    <nav aria-label="Navegação do livro" class="flex flex-col gap-2">
+      {chapters.map((chapter) => (
+        <div class="flex flex-col gap-1">
+          <BookChapterLink
+            chapter={chapter}
+            variant={chapter.id === currentId ? 'active' : 'default'}
+          />
 
-        {chapter.id === currentId && headings.length > 0 && (
-          <nav aria-label="Títulos do capítulo" class="relative flex flex-col gap-1 pl-4 before:absolute before:bottom-0 before:left-0 before:top-0 before:w-px before:bg-border before:content-['']">
-            {headings.map((heading) => (
-              <BookTocLink heading={heading} />
-            ))}
-          </nav>
-        )}
-      </div>
-    ))}
-  </nav>
+          {chapter.id === currentId && headings.length > 0 && (
+            <nav aria-label="Títulos do capítulo" class="relative flex flex-col gap-1 pl-4 before:absolute before:bottom-0 before:left-0 before:top-0 before:w-px before:bg-border before:content-['']">
+              {headings.map((heading) => (
+                <BookTocLink heading={heading} />
+              ))}
+            </nav>
+          )}
+        </div>
+      ))}
+    </nav>
+  </div>
 </aside>
 
 <script>
+  const navigationToggle = document.querySelector<HTMLButtonElement>('[data-book-navigation-toggle]');
+  const navigationContent = document.querySelector<HTMLElement>('[data-book-navigation-content]');
+
+  navigationToggle?.addEventListener('click', () => {
+    if (!navigationContent) return;
+
+    const isOpen = navigationToggle.getAttribute('aria-expanded') === 'true';
+    navigationToggle.setAttribute('aria-expanded', String(!isOpen));
+    navigationContent.classList.toggle('hidden', isOpen);
+    navigationToggle.querySelector('[data-chevron-down]')?.classList.toggle('hidden', !isOpen);
+    navigationToggle.querySelector('[data-chevron-up]')?.classList.toggle('hidden', isOpen);
+  });
+
   const reader = document.querySelector<HTMLElement>('[data-book-reader]');
   const links = [...document.querySelectorAll<HTMLAnchorElement>('[data-toc-link]')];
   const sections = links

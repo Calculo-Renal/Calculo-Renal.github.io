@@ -18,10 +18,10 @@ const { chapter, chapters, headings } = Astro.props as Props;
 const { Content } = await render(chapter);
 ---
 
-<div class="grid h-full min-h-0 min-w-0 flex-1 grid-cols-1 gap-8 md:grid-cols-[minmax(20rem,1.25fr)_minmax(0,3fr)]">
+<div class="grid min-w-0 flex-1 grid-cols-1 gap-6 md:h-full md:min-h-0 md:gap-8 md:grid-cols-[minmax(16rem,1.25fr)_minmax(0,3fr)]">
   <BookNavigation chapters={chapters} currentId={chapter.id} headings={headings} />
-  <main data-book-reader class="min-h-0 overflow-y-auto">
-    <div class="flex w-full flex-col gap-4 prose dark:prose-invert [&>*]:m-0 [&_h1]:font-heading [&_h1]:font-semibold [&_h1]:text-3xl [&_h2]:font-heading [&_h2]:font-semibold [&_h2]:text-2xl [&_h3]:font-heading [&_h3]:font-semibold [&_h3]:text-xl [&_h4]:font-heading [&_h4]:font-semibold [&_h4]:text-lg [&_h5]:font-heading [&_h5]:font-semibold [&_h5]:text-base [&_ul]:list-disc [&_ul]:pl-6 [&_ul]:space-y-2 [&_ol]:list-decimal [&_ol]:pl-6 [&_ol]:space-y-2">
+  <main data-book-reader class="min-w-0 md:min-h-0 md:overflow-y-auto">
+    <div class="flex w-full min-w-0 flex-col gap-4 prose dark:prose-invert [&>*]:m-0 [&_h1]:font-heading [&_h1]:font-semibold [&_h1]:text-3xl [&_h2]:font-heading [&_h2]:font-semibold [&_h2]:text-2xl [&_h3]:font-heading [&_h3]:font-semibold [&_h3]:text-xl [&_h4]:font-heading [&_h4]:font-semibold [&_h4]:text-lg [&_h5]:font-heading [&_h5]:font-semibold [&_h5]:text-base [&_ul]:list-disc [&_ul]:pl-6 [&_ul]:space-y-2 [&_ol]:list-decimal [&_ol]:pl-6 [&_ol]:space-y-2 [&_img]:max-w-full [&_pre]:max-w-full [&_pre]:overflow-x-auto [&_.katex-display]:max-w-full [&_.katex-display]:overflow-x-auto">
       <Heading level={0}>{chapter.data.title}</Heading>
       <Content />
     </div>

@@ -10,7 +10,7 @@ interface Props {
 const { name, image, href } = Astro.props;
 ---
 
-<div class="flex w-40 flex-col items-center">
+<div class="flex w-40 max-w-full flex-col items-center">
   {href ? (
     <Link
       href={href}
