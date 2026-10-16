@@ -1,0 +1,27 @@
+---
+import Link from '@/components/ui/Link.astro';
+
+interface Heading {
+	depth: number;
+	slug: string;
+	text: string;
+}
+
+interface Props {
+	heading: Heading;
+}
+
+const { heading } = Astro.props;
+const depth = Math.max(heading.depth - 2, 0);
+const margin = depth * 0.5;
+const padding = 1.5 + depth * 0.75;
+---
+
+<Link
+	href={`#${heading.slug}`}
+	data-toc-link={heading.slug}
+	variant="toc"
+	style={`--toc-margin: ${margin}rem; padding-inline: ${padding}rem; margin-inline: ${margin}rem`}
+>
+	{heading.text}
+</Link>

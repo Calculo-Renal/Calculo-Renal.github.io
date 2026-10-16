@@ -1,0 +1,145 @@
+---
+title: "Limites"
+description: "Introdução intuitiva ao conceito de limite, limites laterais e limites no infinito."
+order: 1
+---
+
+## Apresentação
+
+Ao estudar uma função, nem sempre estamos interessados apenas em seu valor em um determinado ponto. Muitas vezes, queremos compreender o comportamento da função quando a variável independente se aproxima de um valor específico.
+
+A ideia de limite surgiu justamente para responder a esse tipo de pergunta. Em vez de observar apenas um ponto isolado, passamos a analisar a tendência apresentada pela função nas suas proximidades.
+
+O conceito de limite desempenha um papel fundamental no Cálculo. Ele permite estudar comportamentos locais das funções e serve de base para a construção dos conceitos de derivada e integral, que serão abordados nos próximos capítulos.
+
+Neste capítulo, nosso objetivo não é desenvolver técnicas avançadas de cálculo de limites, mas compreender intuitivamente o significado desse conceito e sua importância para o estudo das taxas de variação.
+
+## O que é um limite?
+
+De forma intuitiva, um limite descreve o valor para o qual uma função tende quando a variável independente se aproxima de determinado ponto.
+
+Em muitas situações, o comportamento da função próximo ao ponto é mais importante do que o valor da própria função nesse ponto.
+
+Essa ideia permite compreender tendências, prever comportamentos e analisar fenômenos que envolvem aproximações.
+
+## Limites laterais
+
+Em alguns casos, é necessário observar separadamente o comportamento da função quando nos aproximamos de um ponto pela esquerda ou pela direita.
+
+Chamamos de limite lateral esquerdo o valor para o qual a função tende quando os valores de $x$ se aproximam do ponto considerado por valores menores.
+
+De forma semelhante, o limite lateral direito corresponde ao comportamento da função quando $x$ se aproxima por valores maiores.
+
+Quando os dois limites laterais existem e possuem o mesmo valor, dizemos que o limite da função existe naquele ponto.
+
+### Exemplo 1 – Limite lateral em uma extremidade do domínio
+
+Considere a função:
+
+$$
+f(x)=2\cos(2x+1)
+$$
+
+definida apenas no intervalo $-3\leq x\leq 1$.
+
+Neste exemplo, analisamos o comportamento da função quando $x$ se aproxima de $1$.
+
+Como a função está definida apenas para valores menores ou iguais a $1$, podemos nos aproximar desse ponto somente pela esquerda. Dessa forma, o limite lateral esquerdo existe e coincide com o valor da função no ponto.
+
+Por outro lado, não existem valores do domínio à direita de $x=1$. Assim, não é possível analisar o limite lateral direito.
+
+Esse exemplo mostra que a existência de um limite lateral depende não apenas da expressão da função, mas também do seu domínio.
+
+import AnimationPlayer from '@/components/shared/AnimationPlayer.astro';
+
+<AnimationPlayer videoId="limites-exemplo-01" title="Limite lateral em uma extremidade do domínio" />
+
+## Quando o limite não existe?
+
+Nem sempre uma função possui limite em um determinado ponto.
+
+Uma situação bastante comum ocorre quando os limites laterais apresentam valores diferentes.
+
+Nesse caso, não existe um único valor para o qual a função tende e, portanto, o limite não existe.
+
+A análise dos limites apresentar valores diferentes é uma ferramenta importante para identificar esse tipo de comportamento.
+
+### Exemplo 2 – Quando o limite não existe
+
+Considere a função definida por partes:
+
+$$
+f(x)=\begin{cases}x^2, & x<1 \\ x+1, & x\geq 1\end{cases}
+$$
+
+Desejamos analisar o comportamento da função quando $x$ se aproxima de $1$.
+
+Aproximando pela esquerda, os valores da função se aproximam de $1^2=1$.
+
+Aproximando pela direita, os valores da função se aproximam de $1+1=2$.
+
+Como os limites laterais são diferentes, não existe um único valor para o qual a função tende quando $x$ se aproxima de $1$.
+
+Portanto, o limite da função quando $x$ se aproxima de $1$ não existe.
+
+Esse exemplo ilustra uma situação clássica em que os limites laterais existem, mas o limite não existe.
+
+<AnimationPlayer videoId="limites-exemplo-02" title="Limites laterais em uma função definida por partes" />
+
+## Limites no infinito
+
+Além de estudar o comportamento de uma função próximo a um ponto específico, também podemos investigar o que acontece quando os valores de $x$ crescem indefinidamente.
+
+Em muitos casos, a função se aproxima cada vez mais de um determinado valor, mesmo sem atingi-lo.
+
+Esse comportamento está associado ao conceito de assíntota horizontal e permite compreender tendências de longo prazo de diversos modelos matemáticos.
+
+### Exemplo 3 – Limite no infinito
+
+Considere a função:
+
+$$
+f(x)=3-\frac{4}{1+x^2}
+$$
+
+À medida que os valores de $x$ aumentam, o termo $\frac{4}{1+x^2}$ torna-se cada vez menor, aproximando-se de zero.
+
+Consequentemente, os valores da função se aproximam de $3$.
+
+Dizemos então que:
+
+$$
+\lim_{x\to +\infty}f(x)=3
+$$
+
+A reta horizontal $y=3$ é chamada de assíntota horizontal da função.
+
+Esse exemplo mostra que uma função pode se aproximar indefinidamente de um valor sem necessariamente atingi-lo, comportamento bastante comum em modelos matemáticos utilizados para descrever fenômenos físicos, biológicos e tecnológicos.
+
+<AnimationPlayer videoId="limites-exemplo-03" title="Limite no infinito e assíntota horizontal" />
+
+## Por que estudar limites?
+
+Até aqui, utilizamos os limites para compreender tendências e comportamentos de funções.
+
+No entanto, a principal importância desse conceito está em sua aplicação na construção de novas ferramentas matemáticas.
+
+Imagine que desejamos responder perguntas como:
+
+* Qual é a velocidade exata de um veículo em determinado instante?
+* Em que momento uma população cresce mais rapidamente?
+* Como identificar pontos de máximo e mínimo de uma função?
+
+Todas essas questões envolvem a ideia de taxa de variação instantânea.
+
+Para construir esse conceito, precisamos analisar o que acontece quando dois pontos de uma curva ficam cada vez mais próximos. Esse processo utiliza exatamente a noção de limite estudada neste capítulo.
+
+No próximo capítulo veremos como essa ideia conduz naturalmente ao conceito de derivada, uma das ferramentas mais importantes do Cálculo.
+
+## Leitura complementar
+
+Este capítulo teve como objetivo apresentar uma visão intuitiva do conceito de limite. Para aprofundar os aspectos teóricos e conhecer técnicas de cálculo de limites, recomendamos a consulta das seguintes obras:
+
+* **ANTON, Howard; BIVENS, Irl; DAVIS, Stephen.** *Cálculo*. Porto Alegre: Bookman.
+* **STEWART, James.** *Cálculo*. São Paulo: Cengage Learning.
+* **THOMAS, George B.; WEIR, Maurice D.; HASS, Joel.** *Cálculo*. São Paulo: Pearson.

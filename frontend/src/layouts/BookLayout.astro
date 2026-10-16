@@ -1,0 +1,57 @@
+---
+import Header from "@/components/layout/Header.astro";
+import Stack from "@/components/ui/Stack.astro";
+
+import "@/styles/global.css";
+import "katex/dist/katex.min.css";
+import "@fontsource-variable/inter";
+import "@fontsource-variable/funnel-display";
+---
+
+<html lang="pt-BR" class="h-full scroll-smooth">
+    <head>
+        <meta charset="utf-8" />
+        <meta name="viewport" content="width=device-width" />
+        <link rel="icon" type="image/png" href="/favicon.png" media="(prefers-color-scheme: light)" />
+        <link rel="icon" type="image/png" href="/favicon-dark.png" media="(prefers-color-scheme: dark)" />
+        <meta name="generator" content={Astro.generator} />
+        <title>Cálculo Renal</title>
+    </head>
+    <body class="flex h-dvh flex-col m-0 overflow-hidden bg-background text-info transition-colors duration-200">
+        <Header />
+        <main class="flex min-h-0 flex-1 flex-col overflow-hidden px-[20%] py-8">
+            <Stack fill>
+                <slot />
+            </Stack>
+        </main>
+    </body>
+</html>
+
+<script>
+    const reader = document.querySelector<HTMLElement>('[data-book-reader]');
+    const navigation = document.querySelector<HTMLElement>('[data-book-navigation]');
+
+    const forwardWheelToBook = (event: WheelEvent) => {
+        if (!reader) return;
+
+        const navigationRight = navigation?.getBoundingClientRect().right ?? window.innerWidth / 2;
+        const readerLeft = reader.getBoundingClientRect().left;
+        const splitPoint = (navigationRight + readerLeft) / 2;
+        const target = event.clientX < splitPoint ? navigation : reader;
+        if (!target) return;
+
+        event.preventDefault();
+        target.scrollTop += event.deltaY;
+    };
+
+    window.addEventListener('wheel', forwardWheelToBook, { passive: false });
+</script>
+
+<style>
+    html,
+    body {
+        margin: 0;
+        width: 100%;
+        height: 100%;
+    }
+</style>

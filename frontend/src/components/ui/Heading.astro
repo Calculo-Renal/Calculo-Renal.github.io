@@ -1,0 +1,27 @@
+---
+interface Props {
+  level?: 0 | 1 | 2 | 3 | 4 | 5;
+  id?: string;
+  variant?: 'default' | 'interactive';
+}
+
+const { level = 2, id, variant = 'default' } = Astro.props;
+type HeadingTag = 'h1' | 'h2' | 'h3' | 'h4' | 'h5';
+const Tag: HeadingTag = level === 0 || level === 1 ? 'h1' : `h${level}` as HeadingTag;
+const size = {
+  0: 'text-4xl',
+  1: 'text-3xl',
+  2: 'text-2xl',
+  3: 'text-xl',
+  4: 'text-lg',
+  5: 'text-base',
+}[level];
+---
+
+<Tag
+  id={id}
+  data-level={level}
+  class={`scroll-mt-24 font-heading ${size} font-semibold text-info ${variant === 'interactive' ? 'transition-colors group-hover:text-primary' : ''}`}
+>
+  <slot />
+</Tag>

@@ -1,0 +1,168 @@
+---
+title: "Aplicações da derivada"
+description: "Aplicações introdutórias da derivada no movimento de um veículo e na variação do volume de água."
+order: 3
+---
+
+import AnimationPlayer from '@/components/shared/AnimationPlayer.astro';
+
+## Apresentação
+
+Nos capítulos anteriores, estudamos os conceitos de limite e derivada, utilizando gráficos e animações para compreender o comportamento das funções.
+
+Vimos que a derivada representa a taxa de variação instantânea de uma função e que seu valor pode ser interpretado geometricamente como a inclinação da reta tangente ao gráfico.
+
+Mas como essa ideia pode ser utilizada em situações do cotidiano?
+
+Neste capítulo, vamos explorar dois exemplos em que a derivada permite interpretar a variação de grandezas ao longo do tempo: o movimento de um veículo e o enchimento de um reservatório de água.
+
+## Velocidade instantânea de um veículo
+
+Quando um veículo está em movimento, sua posição muda ao longo do tempo.
+
+Se conhecemos a posição do veículo em dois instantes, podemos calcular sua velocidade média nesse intervalo.
+
+Entretanto, muitas vezes queremos saber a velocidade em um instante específico, como aquela indicada pelo velocímetro de um automóvel.
+
+Essa é a ideia de velocidade instantânea, que pode ser obtida por meio da derivada da função posição.
+
+### Exemplo 1 – Velocidade instantânea
+
+Considere um veículo que se desloca em linha reta e cuja posição, em metros, é dada pela função:
+
+$$
+s(t)=t^2+2t
+$$
+
+em que $t$ representa o tempo, em segundos, com $t\geq 0$.
+
+A velocidade média do veículo entre os instantes $t=1$ e $t=3$ é dada por:
+
+$$
+v_m=\frac{s(3)-s(1)}{3-1}
+$$
+
+Como:
+
+$$
+s(1)=3
+$$
+
+e:
+
+$$
+s(3)=15
+$$
+
+temos:
+
+$$
+v_m=\frac{15-3}{2}=6\text{ m/s}
+$$
+
+Isso significa que, nesse intervalo, a posição do veículo variou, em média, $6$ metros por segundo.
+
+Para determinar a velocidade instantânea, calculamos a derivada da função posição:
+
+$$
+v(t)=s'(t)=2t+2
+$$
+
+Assim, no instante $t=3$, temos:
+
+$$
+v(3)=2\cdot 3+2=8\text{ m/s}
+$$
+
+Portanto, a velocidade instantânea do veículo nesse momento é de $8$ metros por segundo.
+
+Observe que a velocidade média no intervalo de $1$ a $3$ segundos é diferente da velocidade instantânea no instante $t=3$.
+
+A animação a seguir mostra o deslocamento do veículo e o gráfico de sua posição ao longo do tempo. Observe como a inclinação da reta tangente está relacionada à velocidade instantânea.
+
+**O vídeo do exemplo 1 estará disponível em breve.**
+
+## Variação do volume de água em um reservatório
+
+A derivada também pode ser utilizada para estudar situações em que uma quantidade aumenta ou diminui ao longo do tempo.
+
+Um exemplo é o enchimento de um reservatório de água.
+
+Nesse caso, podemos analisar não apenas o volume armazenado, mas também a rapidez com que esse volume está aumentando.
+
+### Exemplo 2 – Taxa de variação do volume de água
+
+Considere um reservatório cujo volume de água, em litros, durante determinado período de enchimento, é representado pela função:
+
+$$
+V(t)=100+20t+2t^2
+$$
+
+em que $t$ representa o tempo, em minutos, com $0\leq t\leq 5$.
+
+No instante inicial, temos:
+
+$$
+V(0)=100
+$$
+
+Portanto, o reservatório contém inicialmente $100$ litros de água.
+
+Após $5$ minutos, o volume será:
+
+$$
+V(5)=100+20\cdot 5+2\cdot 5^2=250
+$$
+
+Assim, nesse intervalo, o volume de água aumenta de $100$ para $250$ litros.
+
+A taxa de variação média do volume nos primeiros $5$ minutos é:
+
+$$
+\frac{V(5)-V(0)}{5-0}=\frac{250-100}{5}=30\text{ L/min}
+$$
+
+Isso significa que, durante esse período, o volume aumentou, em média, $30$ litros por minuto.
+
+Para determinar a taxa de variação instantânea do volume, calculamos a derivada:
+
+$$
+V'(t)=20+4t
+$$
+
+No instante $t=5$, temos:
+
+$$
+V'(5)=20+4\cdot 5=40\text{ L/min}
+$$
+
+Portanto, após $5$ minutos, o volume de água está aumentando à taxa de $40$ litros por minuto.
+
+Nesse modelo, a taxa de enchimento aumenta com o passar do tempo. Isso pode representar, por exemplo, um sistema em que a vazão de entrada de água é gradualmente aumentada.
+
+A animação mostra o enchimento do reservatório e o gráfico do volume em função do tempo. Observe como a derivada permite acompanhar a rapidez com que a quantidade de água está aumentando.
+
+<AnimationPlayer
+	videoId="aplicacoes-derivada-exemplo-02"
+	title="Taxa de variação do volume de água em um reservatório"
+ />
+
+## O que esses exemplos mostram?
+
+Nos dois exemplos, utilizamos a derivada para estudar a variação de uma grandeza ao longo do tempo.
+
+No movimento do veículo, a derivada da posição representa a velocidade instantânea.
+
+No enchimento do reservatório, a derivada do volume representa a taxa instantânea de variação da quantidade de água armazenada.
+
+Embora as situações sejam diferentes, a ideia matemática é a mesma: a derivada permite determinar como uma grandeza está variando em determinado instante.
+
+Essas aplicações mostram que o Cálculo não se limita ao estudo de expressões algébricas e gráficos. Ele também fornece ferramentas para compreender e analisar fenômenos presentes em diferentes áreas do conhecimento.
+
+## Leitura complementar
+
+Este capítulo apresentou duas aplicações introdutórias da derivada. Para conhecer outros exemplos e aprofundar o estudo das taxas de variação, recomendamos a consulta das seguintes obras:
+
+- **ANTON, Howard; BIVENS, Irl; DAVIS, Stephen.** *Cálculo*. Porto Alegre: Bookman.
+- **STEWART, James.** *Cálculo*. São Paulo: Cengage Learning.
+- **THOMAS, George B.; WEIR, Maurice D.; HASS, Joel.** *Cálculo*. São Paulo: Pearson.

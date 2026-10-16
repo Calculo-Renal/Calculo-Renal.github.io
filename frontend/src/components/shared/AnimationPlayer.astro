@@ -1,0 +1,49 @@
+---
+import derivadasExemplo01 from '@/assets/videos/derivadas/derivadas-exemplo-01.mp4';
+import derivadasExemplo02 from '@/assets/videos/derivadas/derivadas-exemplo-02.mp4';
+import derivadasExemplo03 from '@/assets/videos/derivadas/derivadas-exemplo-03.mp4';
+import derivadasExemplo04 from '@/assets/videos/derivadas/derivadas-exemplo-04.mp4';
+import derivadasExemplo05 from '@/assets/videos/derivadas/derivadas-exemplo-05.mp4';
+import derivadasExemplo06 from '@/assets/videos/derivadas/derivadas-exemplo-06.mp4';
+import limitesExemplo01 from '@/assets/videos/limites/limites-exemplo-01.mp4';
+import limitesExemplo02 from '@/assets/videos/limites/limites-exemplo-02.mp4';
+import limitesExemplo03 from '@/assets/videos/limites/limites-exemplo-03.mp4';
+import aplicacoesDerivadaExemplo02 from '@/assets/videos/aplicacoes-derivada/aplicacoes-derivada-exemplo-02.mp4';
+
+interface Props {
+  videoId:
+    | 'derivadas-exemplo-01'
+    | 'derivadas-exemplo-02'
+    | 'derivadas-exemplo-03'
+    | 'derivadas-exemplo-04'
+    | 'derivadas-exemplo-05'
+    | 'derivadas-exemplo-06'
+    | 'limites-exemplo-01'
+    | 'limites-exemplo-02'
+    | 'limites-exemplo-03'
+    | 'aplicacoes-derivada-exemplo-02';
+  title: string;
+}
+
+const videos = {
+  'derivadas-exemplo-01': derivadasExemplo01,
+  'derivadas-exemplo-02': derivadasExemplo02,
+  'derivadas-exemplo-03': derivadasExemplo03,
+  'derivadas-exemplo-04': derivadasExemplo04,
+  'derivadas-exemplo-05': derivadasExemplo05,
+  'derivadas-exemplo-06': derivadasExemplo06,
+  'limites-exemplo-01': limitesExemplo01,
+  'limites-exemplo-02': limitesExemplo02,
+  'limites-exemplo-03': limitesExemplo03,
+  'aplicacoes-derivada-exemplo-02': aplicacoesDerivadaExemplo02,
+};
+
+const { videoId, title } = Astro.props;
+---
+
+<figure class="overflow-hidden rounded-lg border border-border bg-surface">
+  <video class="w-full" controls preload="metadata" aria-label={title}>
+    <source src={videos[videoId]} type="video/mp4" />
+  </video>
+  <figcaption class="px-4 py-3 font-sans text-sm text-info-secondary">{title}</figcaption>
+</figure>

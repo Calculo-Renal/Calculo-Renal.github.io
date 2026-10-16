@@ -1,0 +1,18 @@
+---
+interface Props {
+  as?: 'p' | 'span' | 'h1' | 'h2' | 'h3' | 'h4';
+  variant?: 'default' | 'muted' | 'badge' | 'description';
+}
+
+const { as: Element = 'p', variant = 'default' } = Astro.props as Props;
+const styles = {
+  default: '',
+  muted: 'text-info-secondary',
+  badge: 'flex size-9 shrink-0 items-center justify-center rounded-md border border-border bg-background font-sans text-sm font-bold text-info',
+  description: 'text-sm leading-6 text-info-secondary',
+}[variant];
+---
+
+<Element class={`text-info transition-colors duration-200 font-sans text-justify ${styles}`}>
+  <slot />
+</Element>

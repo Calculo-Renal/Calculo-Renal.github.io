@@ -1,0 +1,27 @@
+---
+import { Image } from 'astro:assets';
+import logoLight from '@/assets/images/logo.png';
+import logoDark from '@/assets/images/logo-dark.png';
+
+interface Props {
+  height?: number;
+}
+
+const { height = 64 } = Astro.props;
+---
+
+<div class="flex items-center justify-center">
+  <Image
+    src={logoLight}
+    alt="Logo"
+    height={height}
+    class="block dark:hidden object-contain w-auto"
+  />
+
+  <Image
+    src={logoDark}
+    alt="Logo"
+    height={height}
+    class="hidden dark:block object-contain w-auto"
+  />
+</div>

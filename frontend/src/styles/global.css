@@ -1,0 +1,44 @@
+@import "tailwindcss";
+
+@theme inline {
+    --font-heading: 'Funnel Display Variable', sans-serif;
+    --font-sans: 'Inter Variable', sans-serif;
+
+    --color-primary: var(--theme-primary);
+    --color-background: var(--theme-background);
+    --color-surface: var(--theme-surface);
+    --color-surface-active: var(--theme-surface-active);
+    --color-info: var(--theme-text);
+    --color-info-secondary: var(--theme-text-secondary);
+    --color-border: var(--theme-border);
+}
+
+:root {
+    --theme-primary: #EEC39A;
+
+    --theme-background: #F1F1F1;
+    --theme-surface: #E2E2E2;
+    --theme-surface-active: #E0E1E6;
+
+    --theme-text: #000000;
+    --theme-text-secondary: #60646C;
+
+    --theme-border: #D8DADF;
+}
+
+@media (prefers-color-scheme: dark) {
+    :root {
+        --theme-primary: #EEC39A;
+
+        --theme-background: #1E1E1E;
+        --theme-surface: #2D2D2D;
+        --theme-surface-active: #2E3135;
+
+        --theme-text: #FFFFFF;
+        --theme-text-secondary: #B0B4BA;
+
+        --theme-border: #3A3D42;
+    }
+}
+
+

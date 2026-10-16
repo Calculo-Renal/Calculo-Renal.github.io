@@ -1,0 +1,17 @@
+---
+interface Props {
+  gap?: 'sm' | 'md' | 'lg';
+  fill?: boolean;
+}
+
+const { gap = 'md', fill = false } = Astro.props as Props;
+const gapClass = {
+  sm: 'gap-4',
+  md: 'gap-8',
+  lg: 'gap-10',
+}[gap];
+---
+
+<div class:list={['flex flex-col', gapClass, { 'min-h-0 flex-1': fill }]}>
+  <slot />
+</div>

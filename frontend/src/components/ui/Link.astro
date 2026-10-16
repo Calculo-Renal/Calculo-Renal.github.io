@@ -1,0 +1,22 @@
+---
+interface Props {
+  href: string;
+  variant?: 'default' | 'navigation' | 'chapter' | 'chapter-active' | 'chapter-card' | 'toc' | 'profile';
+  [key: string]: unknown;
+}
+
+const { href, variant = 'default', ...attributes } = Astro.props;
+const styles = {
+  default: '',
+  navigation: 'text-info-secondary transition-colors hover:text-primary',
+  chapter: 'flex items-center gap-3 rounded-md px-3 py-2 font-sans text-sm text-info-secondary transition-colors hover:bg-surface hover:text-info',
+  'chapter-active': 'flex items-center gap-3 rounded-md px-3 py-2 font-sans text-sm transition-colors bg-surface-active text-info',
+  'chapter-card': 'group flex items-start gap-4 rounded-lg border border-border bg-surface p-4 transition-colors hover:border-primary hover:bg-surface-active',
+  toc: 'relative rounded py-1.5 pl-2 font-sans text-sm text-info-secondary transition-colors hover:bg-surface hover:text-info before:absolute before:left-[calc(-19.5px_-_var(--toc-margin))] before:top-1/2 before:size-[7px] before:-translate-y-1/2 before:rounded-full before:border before:border-border before:bg-background before:content-[""] before:transition-[background-color,border-color,transform] before:duration-200 aria-[current=location]:bg-surface-active aria-[current=location]:text-info aria-[current=location]:before:scale-125 aria-[current=location]:before:border-primary aria-[current=location]:before:bg-primary',
+  profile: 'group flex w-full flex-col items-center gap-3 rounded-md p-3 transition-colors hover:bg-surface-active focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-primary',
+}[variant];
+---
+
+<a href={href} class={styles} {...attributes}>
+  <slot />
+</a>

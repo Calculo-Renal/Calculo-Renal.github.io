@@ -1,0 +1,39 @@
+---
+import Link from '@/components/ui/Link.astro';
+import Heading from '@/components/ui/Heading.astro';
+import Text from '@/components/ui/Text.astro';
+import type { Chapter } from '@/types/Chapter';
+
+interface Props {
+  chapters: Chapter[];
+}
+
+const { chapters } = Astro.props as Props;
+---
+
+<section class="flex w-full flex-col gap-8">
+  <header class="flex flex-col gap-4">
+    <Heading level={0}>Sumário</Heading>
+    <Text variant="muted">
+      Explore os capítulos do livro e avance pelos conteúdos de Cálculo.
+    </Text>
+  </header>
+
+  <div class="flex flex-col gap-3">
+    {chapters.map((chapter) => (
+      <Link href={`/livro/${chapter.id}`} variant="chapter-card">
+        <Text variant="badge">
+          {chapter.data.order}
+        </Text>
+        <div class="flex min-w-0 flex-col gap-1">
+          <Heading level={3} variant="interactive">
+            {chapter.data.title}
+          </Heading>
+          <Text variant="description">
+            {chapter.data.description}
+          </Text>
+        </div>
+      </Link>
+    ))}
+  </div>
+</section>

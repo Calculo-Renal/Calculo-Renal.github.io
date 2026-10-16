@@ -1,0 +1,21 @@
+---
+import { getCollection, render } from 'astro:content';
+import BookLayout from '@/layouts/BookLayout.astro';
+import BookReader from '@/components/layout/BookReader.astro';
+
+export async function getStaticPaths() {
+  const chapters = (await getCollection('chapter'))
+    .sort((first, second) => first.data.order - second.data.order);
+  return chapters.map((chapter) => ({
+    params: { slug: chapter.id },
+    props: { chapter, chapters },
+  }));
+}
+
+const { chapter, chapters } = Astro.props;
+const { headings } = await render(chapter);
+---
+
+<BookLayout>
+    <BookReader chapter={chapter} chapters={chapters} headings={headings} />
+</BookLayout>

@@ -1,0 +1,109 @@
+---
+import BookChapterLink from '@/components/layout/BookChapterLink.astro';
+import BookTocLink from '@/components/layout/BookTocLink.astro';
+import Heading from '@/components/ui/Heading.astro';
+import type { Chapter } from '@/types/Chapter';
+
+interface Props {
+  chapters: Chapter[];
+  currentId: string;
+  headings: {
+    depth: number;
+    slug: string;
+    text: string;
+  }[];
+}
+
+const { chapters, currentId, headings } = Astro.props;
+---
+
+<aside data-book-navigation class="book-navigation flex min-h-0 flex-col gap-4 self-start overflow-y-auto border-border md:h-full md:border-r md:pr-6">
+  <Heading level={2}>Capítulos</Heading>
+  <nav aria-label="Navegação do livro" class="flex flex-col gap-2">
+    {chapters.map((chapter) => (
+      <div class="flex flex-col gap-1">
+        <BookChapterLink
+          chapter={chapter}
+          variant={chapter.id === currentId ? 'active' : 'default'}
+        />
+
+        {chapter.id === currentId && headings.length > 0 && (
+          <nav aria-label="Títulos do capítulo" class="relative flex flex-col gap-1 pl-4 before:absolute before:bottom-0 before:left-0 before:top-0 before:w-px before:bg-border before:content-['']">
+            {headings.map((heading) => (
+              <BookTocLink heading={heading} />
+            ))}
+          </nav>
+        )}
+      </div>
+    ))}
+  </nav>
+</aside>
+
+<script>
+  const reader = document.querySelector<HTMLElement>('[data-book-reader]');
+  const links = [...document.querySelectorAll<HTMLAnchorElement>('[data-toc-link]')];
+  const sections = links
+    .map((link) => document.getElementById(link.dataset.tocLink ?? ''))
+    .filter((section): section is HTMLElement => section instanceof HTMLElement);
+
+  const setActiveLink = (sectionId: string) => {
+    links.forEach((link) => link.removeAttribute('aria-current'));
+    links.find((link) => link.dataset.tocLink === sectionId)?.setAttribute('aria-current', 'location');
+  };
+
+  const initializeToc = () => {
+    if (!reader || !links.length || !sections.length) return;
+
+    links.forEach((link) => {
+      link.addEventListener('click', (event) => {
+        const section = sections.find((item) => item.id === link.dataset.tocLink);
+        if (!section) return;
+
+        event.preventDefault();
+        window.history.replaceState(null, '', `#${section.id}`);
+        setActiveLink(section.id);
+        section.scrollIntoView({ behavior: 'smooth', block: 'start' });
+      });
+    });
+
+    const visibleSections = new Set<HTMLElement>();
+    let activeUpdateTimer: ReturnType<typeof setTimeout> | undefined;
+    const activationLine = () => reader.getBoundingClientRect().top + 24;
+    const updateActiveLink = () => {
+      const line = activationLine();
+      const activeSection = [...visibleSections].sort((first, second) => {
+        const firstTop = first.getBoundingClientRect().top;
+        const secondTop = second.getBoundingClientRect().top;
+        const firstPassedLine = firstTop <= line;
+        const secondPassedLine = secondTop <= line;
+
+        if (firstPassedLine !== secondPassedLine) return firstPassedLine ? -1 : 1;
+        return firstPassedLine ? secondTop - firstTop : firstTop - secondTop;
+      })[0];
+
+      if (activeSection) setActiveLink(activeSection.id);
+    };
+
+    const scheduleActiveLinkUpdate = () => {
+      clearTimeout(activeUpdateTimer);
+      activeUpdateTimer = setTimeout(updateActiveLink, 120);
+    };
+
+    const observer = new IntersectionObserver(
+      (entries) => {
+        entries.forEach((entry) => {
+          const section = entry.target as HTMLElement;
+          if (entry.isIntersecting) visibleSections.add(section);
+          else visibleSections.delete(section);
+        });
+
+        scheduleActiveLinkUpdate();
+      },
+      { root: reader, rootMargin: '-24px 0px -70% 0px', threshold: 0 },
+    );
+
+    sections.forEach((section) => observer.observe(section));
+  };
+
+  initializeToc();
+</script>

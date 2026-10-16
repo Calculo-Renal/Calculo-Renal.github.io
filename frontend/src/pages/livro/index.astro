@@ -1,0 +1,12 @@
+---
+import { getCollection } from 'astro:content';
+import BookIndex from '@/components/layout/BookIndex.astro';
+import Layout from '@/layouts/Layout.astro';
+
+const chapters = (await getCollection('chapter'))
+	.sort((first, second) => first.data.order - second.data.order);
+---
+
+<Layout>
+  <BookIndex chapters={chapters} />
+</Layout>
