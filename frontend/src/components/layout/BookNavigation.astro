@@ -96,7 +96,7 @@ const { chapters, currentId, headings } = Astro.props;
 
     const visibleSections = new Set<HTMLElement>();
     let activeUpdateTimer: ReturnType<typeof setTimeout> | undefined;
-    const activationLine = () => reader.getBoundingClientRect().top + 24;
+    const activationLine = () => reader.getBoundingClientRect().top + 120;
     const updateActiveLink = () => {
       const line = activationLine();
       const activeSection = [...visibleSections].sort((first, second) => {
@@ -127,7 +127,7 @@ const { chapters, currentId, headings } = Astro.props;
 
         scheduleActiveLinkUpdate();
       },
-      { root: reader, rootMargin: '-24px 0px -70% 0px', threshold: 0 },
+      { root: reader, rootMargin: '-80px 0px -40% 0px', threshold: [0, 0.1, 0.5, 1] },
     );
 
     sections.forEach((section) => observer.observe(section));
