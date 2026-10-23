@@ -1,9 +1,9 @@
 ---
-import BookChapterLink from '@/components/layout/BookChapterLink.astro';
-import BookTocLink from '@/components/layout/BookTocLink.astro';
-import Heading from '@/components/ui/Heading.astro';
-import type { Chapter } from '@/types/Chapter';
-import { ChevronDown, ChevronUp } from '@lucide/astro';
+import BookChapterLink from "@/components/layout/BookChapterLink.astro";
+import BookTocLink from "@/components/layout/BookTocLink.astro";
+import Heading from "@/components/ui/Heading.astro";
+import type { Chapter } from "@/types/Chapter";
+import { ChevronDown, ChevronUp } from "@lucide/astro";
 
 interface Props {
   chapters: Chapter[];
@@ -18,7 +18,10 @@ interface Props {
 const { chapters, currentId, headings } = Astro.props;
 ---
 
-<aside data-book-navigation class="book-navigation flex min-h-0 flex-col gap-4 self-start overflow-y-auto border-b border-border pb-4 md:h-full md:border-b-0 md:border-r md:pb-[80px] md:pr-6">
+<aside
+  data-book-navigation
+  class="book-navigation flex min-h-0 flex-col gap-4 self-start overflow-y-auto border-b border-border pb-4 md:h-full md:border-b-0 md:border-r md:pb-[80px] md:pr-6"
+>
   <button
     type="button"
     class="flex cursor-pointer items-center justify-between text-left md:pointer-events-none"
@@ -32,115 +35,167 @@ const { chapters, currentId, headings } = Astro.props;
       <ChevronUp size={20} class="hidden" data-chevron-up />
     </span>
   </button>
-  <div id="book-navigation-content" class="hidden md:block" data-book-navigation-content>
+  <div
+    id="book-navigation-content"
+    class="hidden md:block"
+    data-book-navigation-content
+  >
     <nav aria-label="Navegação do livro" class="flex flex-col gap-2">
-      {chapters.map((chapter) => (
-        <div class="flex flex-col gap-1">
-          <BookChapterLink
-            chapter={chapter}
-            variant={chapter.id === currentId ? 'active' : 'default'}
-          />
+      {
+        chapters.map((chapter) => (
+          <div class="flex flex-col gap-1">
+            <BookChapterLink
+              chapter={chapter}
+              variant={chapter.id === currentId ? "active" : "default"}
+            />
 
-          {chapter.id === currentId && headings.length > 0 && (
-            <nav aria-label="Títulos do capítulo" class="relative flex flex-col gap-1 pl-4 before:absolute before:bottom-0 before:left-0 before:top-0 before:w-px before:bg-border before:content-['']">
-              {headings.map((heading) => (
-                <BookTocLink heading={heading} />
-              ))}
-            </nav>
-          )}
-        </div>
-      ))}
+            {chapter.id === currentId && headings.length > 0 && (
+              <nav
+                aria-label="Títulos do capítulo"
+                class="relative flex flex-col gap-1 pl-4 before:absolute before:bottom-0 before:left-0 before:top-0 before:w-px before:bg-border before:content-['']"
+              >
+                {headings.map((heading) => (
+                  <BookTocLink heading={heading} />
+                ))}
+              </nav>
+            )}
+          </div>
+        ))
+      }
     </nav>
   </div>
 </aside>
 
 <script>
-  const navigationToggle = document.querySelector<HTMLButtonElement>('[data-book-navigation-toggle]');
-  const navigationContent = document.querySelector<HTMLElement>('[data-book-navigation-content]');
+  document.addEventListener("DOMContentLoaded", () => {
+    const navigationToggle = document.querySelector<HTMLButtonElement>(
+      "[data-book-navigation-toggle]",
+    );
+    const navigationContentEl = document.querySelector<HTMLElement>(
+      "[data-book-navigation-content]",
+    );
 
-  navigationToggle?.addEventListener('click', () => {
-    if (!navigationContent) return;
+    navigationToggle?.addEventListener("click", () => {
+      if (!navigationContentEl) return;
 
-    const isOpen = navigationToggle.getAttribute('aria-expanded') === 'true';
-    navigationToggle.setAttribute('aria-expanded', String(!isOpen));
-    navigationContent.classList.toggle('hidden', isOpen);
-    navigationToggle.querySelector('[data-chevron-down]')?.classList.toggle('hidden', !isOpen);
-    navigationToggle.querySelector('[data-chevron-up]')?.classList.toggle('hidden', isOpen);
-  });
-
-  const reader = document.querySelector<HTMLElement>('[data-book-reader]');
-  const links = [...document.querySelectorAll<HTMLAnchorElement>('[data-toc-link]')];
-  const sections = links
-    .map((link) => document.getElementById(link.dataset.tocLink ?? ''))
-    .filter((section): section is HTMLElement => section instanceof HTMLElement);
-
-  const setActiveLink = (sectionId: string) => {
-    links.forEach((link) => link.removeAttribute('aria-current'));
-    links.find((link) => link.dataset.tocLink === sectionId)?.setAttribute('aria-current', 'location');
-  };
-
-  const initializeToc = () => {
-    if (!reader || !links.length || !sections.length) return;
-
-    links.forEach((link) => {
-      link.addEventListener('click', (event) => {
-        const section = sections.find((item) => item.id === link.dataset.tocLink);
-        if (!section) return;
-
-        event.preventDefault();
-        window.history.replaceState(null, '', `#${section.id}`);
-        setActiveLink(section.id);
-        section.scrollIntoView({ behavior: 'smooth', block: 'start' });
-      });
+      const isOpen = navigationToggle.getAttribute("aria-expanded") === "true";
+      navigationToggle.setAttribute("aria-expanded", String(!isOpen));
+      navigationContentEl.classList.toggle("hidden", isOpen);
+      navigationToggle
+        .querySelector("[data-chevron-down]")
+        ?.classList.toggle("hidden", !isOpen);
+      navigationToggle
+        .querySelector("[data-chevron-up]")
+        ?.classList.toggle("hidden", isOpen);
     });
 
-    let activeUpdateTimer: ReturnType<typeof setTimeout> | undefined;
-    const activationLine = () => reader.getBoundingClientRect().top + 220;
+    const reader = document.querySelector<HTMLElement>("[data-book-reader]");
+    const links = [
+      ...document.querySelectorAll<HTMLAnchorElement>("[data-toc-link]"),
+    ];
+    const sections = links
+      .map((link) => document.getElementById(link.dataset.tocLink ?? ""))
+      .filter(
+        (section): section is HTMLElement => section instanceof HTMLElement,
+      );
 
-    const updateActiveLink = () => {
-      if (!sections.length) return;
+    const tocNavigation = document.querySelector<HTMLElement>(
+      "[data-book-navigation]",
+    );
 
-      const line = activationLine();
-      const readerRect = reader.getBoundingClientRect();
-      const scrollBottom = reader.scrollTop + reader.clientHeight;
-      const scrollHeight = reader.scrollHeight;
-      const isNearBottom = scrollHeight - scrollBottom < 200;
-
-      if (isNearBottom) {
-        setActiveLink(sections[sections.length - 1].id);
-        return;
+    const scrollTocToActiveLink = (link: HTMLAnchorElement) => {
+      if (!tocNavigation) return;
+      const linkRect = link.getBoundingClientRect();
+      const navRect = tocNavigation.getBoundingClientRect();
+      const offset = linkRect.top - navRect.top - tocNavigation.scrollTop;
+      if (offset < 0 || offset > navRect.height - 60) {
+        tocNavigation.scrollTo({
+          top:
+            tocNavigation.scrollTop +
+            offset -
+            navRect.height / 2 +
+            linkRect.height / 2,
+          behavior: "smooth",
+        });
       }
+    };
 
-      let currentSection: HTMLElement | null = null;
+    const setActiveLink = (sectionId: string) => {
+      links.forEach((link) => link.removeAttribute("aria-current"));
+      const activeLink = links.find(
+        (link) => link.dataset.tocLink === sectionId,
+      );
+      activeLink?.setAttribute("aria-current", "location");
+      if (activeLink) scrollTocToActiveLink(activeLink);
+    };
 
-      for (let i = 0; i < sections.length; i++) {
-        const section = sections[i];
-        const rect = section.getBoundingClientRect();
-        const sectionTop = rect.top - readerRect.top + reader.scrollTop;
+    const initializeToc = () => {
+      if (!reader || !links.length || !sections.length) return;
 
-        if (sectionTop <= reader.scrollTop + 250) {
-          currentSection = section;
-        } else {
-          break;
+      links.forEach((link) => {
+        link.addEventListener("click", (event) => {
+          const section = sections.find(
+            (item) => item.id === link.dataset.tocLink,
+          );
+          if (!section) return;
+
+          event.preventDefault();
+          window.history.replaceState(null, "", `#${section.id}`);
+          setActiveLink(section.id);
+          section.scrollIntoView({ behavior: "smooth", block: "start" });
+        });
+      });
+
+      let activeUpdateTimer: ReturnType<typeof setTimeout> | undefined;
+      const activationLine = () => reader.getBoundingClientRect().top + 220;
+
+      const updateActiveLink = () => {
+        if (!sections.length) return;
+
+        const line = activationLine();
+        const readerRect = reader.getBoundingClientRect();
+        const scrollBottom = reader.scrollTop + reader.clientHeight;
+        const scrollHeight = reader.scrollHeight;
+        const isNearBottom = scrollHeight - scrollBottom < 200;
+
+        if (isNearBottom) {
+          setActiveLink(sections[sections.length - 1].id);
+          return;
         }
-      }
 
-      if (currentSection) {
-        setActiveLink(currentSection.id);
-      } else if (sections[0]) {
-        setActiveLink(sections[0].id);
-      }
+        let currentSection: HTMLElement | null = null;
+
+        for (let i = 0; i < sections.length; i++) {
+          const section = sections[i];
+          const rect = section.getBoundingClientRect();
+          const sectionTop = rect.top - readerRect.top + reader.scrollTop;
+
+          if (sectionTop <= reader.scrollTop + 250) {
+            currentSection = section;
+          } else {
+            break;
+          }
+        }
+
+        if (currentSection) {
+          setActiveLink(currentSection.id);
+        } else if (sections[0]) {
+          setActiveLink(sections[0].id);
+        }
+      };
+
+      const scheduleActiveLinkUpdate = () => {
+        clearTimeout(activeUpdateTimer);
+        activeUpdateTimer = setTimeout(updateActiveLink, 80);
+      };
+
+      reader.addEventListener("scroll", scheduleActiveLinkUpdate, {
+        passive: true,
+      });
+      window.addEventListener("resize", scheduleActiveLinkUpdate);
+      updateActiveLink();
     };
 
-    const scheduleActiveLinkUpdate = () => {
-      clearTimeout(activeUpdateTimer);
-      activeUpdateTimer = setTimeout(updateActiveLink, 80);
-    };
-
-    reader.addEventListener('scroll', scheduleActiveLinkUpdate, { passive: true });
-    window.addEventListener('resize', scheduleActiveLinkUpdate);
-    updateActiveLink();
-  };
-
-  initializeToc();
+    initializeToc();
+  });
 </script>
