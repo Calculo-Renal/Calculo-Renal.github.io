@@ -18,7 +18,7 @@ interface Props {
 const { chapters, currentId, headings } = Astro.props;
 ---
 
-<aside data-book-navigation class="book-navigation flex min-h-0 flex-col gap-4 self-start overflow-y-auto border-b border-border pb-4 md:h-full md:border-b-0 md:border-r md:pb-0 md:pr-6">
+<aside data-book-navigation class="book-navigation flex min-h-0 flex-col gap-4 self-start overflow-y-auto border-b border-border pb-4 md:h-full md:border-b-0 md:border-r md:pb-[80px] md:pr-6">
   <button
     type="button"
     class="flex cursor-pointer items-center justify-between text-left md:pointer-events-none"
@@ -94,43 +94,52 @@ const { chapters, currentId, headings } = Astro.props;
       });
     });
 
-    const visibleSections = new Set<HTMLElement>();
     let activeUpdateTimer: ReturnType<typeof setTimeout> | undefined;
-    const activationLine = () => reader.getBoundingClientRect().top + 120;
+    const activationLine = () => reader.getBoundingClientRect().top + 220;
+
     const updateActiveLink = () => {
+      if (!sections.length) return;
+
       const line = activationLine();
-      const activeSection = [...visibleSections].sort((first, second) => {
-        const firstTop = first.getBoundingClientRect().top;
-        const secondTop = second.getBoundingClientRect().top;
-        const firstPassedLine = firstTop <= line;
-        const secondPassedLine = secondTop <= line;
+      const readerRect = reader.getBoundingClientRect();
+      const scrollBottom = reader.scrollTop + reader.clientHeight;
+      const scrollHeight = reader.scrollHeight;
+      const isNearBottom = scrollHeight - scrollBottom < 200;
 
-        if (firstPassedLine !== secondPassedLine) return firstPassedLine ? -1 : 1;
-        return firstPassedLine ? secondTop - firstTop : firstTop - secondTop;
-      })[0];
+      if (isNearBottom) {
+        setActiveLink(sections[sections.length - 1].id);
+        return;
+      }
 
-      if (activeSection) setActiveLink(activeSection.id);
+      let currentSection: HTMLElement | null = null;
+
+      for (let i = 0; i < sections.length; i++) {
+        const section = sections[i];
+        const rect = section.getBoundingClientRect();
+        const sectionTop = rect.top - readerRect.top + reader.scrollTop;
+
+        if (sectionTop <= reader.scrollTop + 250) {
+          currentSection = section;
+        } else {
+          break;
+        }
+      }
+
+      if (currentSection) {
+        setActiveLink(currentSection.id);
+      } else if (sections[0]) {
+        setActiveLink(sections[0].id);
+      }
     };
 
     const scheduleActiveLinkUpdate = () => {
       clearTimeout(activeUpdateTimer);
-      activeUpdateTimer = setTimeout(updateActiveLink, 120);
+      activeUpdateTimer = setTimeout(updateActiveLink, 80);
     };
 
-    const observer = new IntersectionObserver(
-      (entries) => {
-        entries.forEach((entry) => {
-          const section = entry.target as HTMLElement;
-          if (entry.isIntersecting) visibleSections.add(section);
-          else visibleSections.delete(section);
-        });
-
-        scheduleActiveLinkUpdate();
-      },
-      { root: reader, rootMargin: '-80px 0px -40% 0px', threshold: [0, 0.1, 0.5, 1] },
-    );
-
-    sections.forEach((section) => observer.observe(section));
+    reader.addEventListener('scroll', scheduleActiveLinkUpdate, { passive: true });
+    window.addEventListener('resize', scheduleActiveLinkUpdate);
+    updateActiveLink();
   };
 
   initializeToc();
