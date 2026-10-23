@@ -4,20 +4,33 @@ import Bold from '@/components/ui/Bold.astro';
 import Stack from '@/components/ui/Stack.astro';
 import Text from '@/components/ui/Text.astro';
 import Layout from '@/layouts/Layout.astro';
+import Button from '@/components/ui/Button.astro';
+import { BookOpen } from '@lucide/astro';
 ---
 
 <Layout>
-    <Stack gap="sm">
-      <Heading level={0}>Cálculo Renal</Heading>
-      <Text>
+    <Stack gap="lg">
+      <Stack gap="sm">
+        <Heading level={0}>Cálculo Renal</Heading>
+        <Text>
   		    <Bold>Cálculo Renal</Bold> é um projeto focado em facilitar o aprendizado da
-        disciplina de Cálculo para alunos do ensino técnico e graduação. O
-        projeto é composto por um livro digital, disponível gratuitamente, e uma
-        série de conquistas que os alunos podem desbloquear ao completar
-        exercícios e desafios relacionados ao conteúdo do livro. O objetivo é
-        tornar o aprendizado do Cálculo mais acessível, interativo e motivador
-        para os estudantes, incentivando-os a explorar os conceitos matemáticos
-        de forma prática e envolvente.
+          disciplina de Cálculo para alunos do ensino técnico e graduação. O
+          projeto é composto por um livro digital, disponível gratuitamente, e uma
+          série de conquistas que os alunos podem desbloquear ao completar
+          exercícios e desafios relacionados ao conteúdo do livro. O objetivo é
+          tornar o aprendizado do Cálculo mais acessível, interativo e motivador
+          para os estudantes, incentivando-os a explorar os conceitos matemáticos
+          de forma prática e envolvente.
   	    </Text>
+      </Stack>
+      <div class="flex flex-wrap items-center gap-3">
+        <Button href="/livro" variant="primary">
+          <BookOpen size={18} />
+          Começar a ler
+        </Button>
+        <Button href="/sobre-nos" variant="outline">
+          Saiba mais
+        </Button>
+      </div>
     </Stack>
 </Layout>

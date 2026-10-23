@@ -2,11 +2,20 @@
 import { getCollection } from 'astro:content';
 import BookIndex from '@/components/layout/BookIndex.astro';
 import Layout from '@/layouts/Layout.astro';
+import Heading from '@/components/ui/Heading.astro';
+import Stack from '@/components/ui/Stack.astro';
+import Text from '@/components/ui/Text.astro';
 
 const chapters = (await getCollection('chapter'))
 	.sort((first, second) => first.data.order - second.data.order);
 ---
 
 <Layout>
-  <BookIndex chapters={chapters} />
+  <Stack gap="lg">
+    <Stack gap="sm">
+      <Heading level={0}>Livro</Heading>
+      <Text>Selecione um capítulo para começar a estudar.</Text>
+    </Stack>
+    <BookIndex chapters={chapters} />
+  </Stack>
 </Layout>

@@ -6,7 +6,7 @@ import { Menu, X } from '@lucide/astro';
 ---
 
 <header class="sticky top-0 z-30 w-full bg-surface border-b border-border transition-colors duration-200">
-  <div class="relative flex w-full items-center justify-between gap-4 py-3 px-4 sm:px-8 lg:px-[20%]">
+  <div class="relative flex w-full items-center justify-between gap-4 py-3 px-8 lg:px-[20%]">
     <Link href="/" class="absolute left-1/2 shrink-0 -translate-x-1/2 md:static md:translate-x-0">
       <Logo />
     </Link>
@@ -17,7 +17,7 @@ import { Menu, X } from '@lucide/astro';
 
     <button
       type="button"
-      class="ml-auto inline-flex size-10 cursor-pointer items-center justify-center rounded-md border border-border text-info transition-colors hover:bg-surface-active md:hidden"
+      class="ml-auto inline-flex size-10 cursor-pointer items-center justify-center rounded-lg border border-border text-info transition-colors hover:bg-surface-hover md:hidden"
       aria-label="Abrir menu"
       aria-controls="mobile-navigation"
       aria-expanded="false"
@@ -28,25 +28,26 @@ import { Menu, X } from '@lucide/astro';
     </button>
   </div>
 
-  <div class="fixed inset-0 z-40 hidden bg-black/30 md:hidden" data-menu-backdrop></div>
+  <div class="fixed inset-0 z-40 hidden bg-black/40 backdrop-blur-sm transition-opacity md:hidden" data-menu-backdrop></div>
   <aside
     id="mobile-navigation"
-    class="fixed right-0 top-0 z-50 flex h-dvh w-[min(18rem,85vw)] translate-x-full flex-col gap-8 bg-surface p-6 shadow-xl transition-transform duration-200 md:hidden"
+    class="fixed right-0 top-0 z-50 flex h-dvh w-[min(22rem,92vw)] translate-x-full flex-col gap-8 border-l border-border bg-surface p-8 shadow-2xl transition-transform duration-300 ease-out md:hidden"
     aria-label="Menu principal"
     aria-hidden="true"
     data-mobile-menu
   >
     <div class="flex items-center justify-between">
-      <span class="font-heading text-lg font-semibold text-info">Menu</span>
+      <span class="font-heading text-xl font-semibold text-info">Menu</span>
       <button
         type="button"
-        class="inline-flex size-10 cursor-pointer items-center justify-center rounded-md border border-border text-info transition-colors hover:bg-surface-active"
+        class="inline-flex size-11 cursor-pointer items-center justify-center rounded-lg border border-border text-info transition-colors hover:bg-surface-hover"
         aria-label="Fechar menu"
         data-menu-close
       >
-        <X size={20} aria-hidden="true" />
+        <X size={22} aria-hidden="true" />
       </button>
     </div>
+    <div class="h-px w-full bg-border"></div>
     <Navigation />
   </aside>
 </header>

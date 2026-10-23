@@ -1,0 +1,41 @@
+---
+interface Props {
+  href?: string;
+  variant?: 'primary' | 'secondary' | 'ghost' | 'outline';
+  size?: 'sm' | 'md' | 'lg';
+  type?: 'button' | 'submit' | 'reset';
+  class?: string;
+  [key: string]: unknown;
+}
+
+const {
+  href,
+  variant = 'primary',
+  size = 'lg',
+  type = 'button',
+  class: className = '',
+  ...attributes
+} = Astro.props;
+
+const Tag = href ? 'a' : 'button';
+
+const baseStyles =
+  'inline-flex items-center justify-center gap-2 rounded-lg font-sans font-medium transition-all duration-200 focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-primary disabled:pointer-events-none disabled:opacity-50';
+
+const variantStyles = {
+  primary: 'bg-primary text-white shadow-sm hover:bg-[var(--theme-primary-hover)] hover:shadow-md active:bg-[var(--theme-primary-active)] active:scale-[0.98]',
+  secondary: 'bg-surface text-info border border-border hover:bg-surface-hover hover:border-border-strong',
+  ghost: 'text-info-secondary hover:text-info hover:bg-surface-hover',
+  outline: 'border border-border text-info hover:bg-surface-hover hover:border-border-strong',
+}[variant];
+
+const sizeStyles = {
+  sm: 'h-8 px-3 text-sm',
+  md: 'h-9 px-4 text-sm',
+  lg: 'h-11 px-6 text-base',
+}[size];
+---
+
+<Tag href={href} type={!href ? type : undefined} class={`${baseStyles} ${variantStyles} ${sizeStyles} ${className}`} {...attributes}>
+  <slot />
+</Tag>

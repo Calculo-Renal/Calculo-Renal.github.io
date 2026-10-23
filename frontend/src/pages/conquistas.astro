@@ -3,13 +3,19 @@ import Heading from '@/components/ui/Heading.astro';
 import Stack from '@/components/ui/Stack.astro';
 import Text from '@/components/ui/Text.astro';
 import Layout from '@/layouts/Layout.astro';
+import Button from '@/components/ui/Button.astro';
+import { BookOpen } from '@lucide/astro';
 ---
 
 <Layout>
   <Stack gap="sm">
     <Heading level={0}>Conquistas</Heading>
-    <Text>
-      <strong class="font-semibold text-info">TODO:</strong> esta página ainda está em desenvolvimento.
-    </Text>
+    <Text>Em breve: sistema de conquistas para acompanhar seu progresso pelo livro.</Text>
+    <div class="flex flex-wrap items-center gap-3 pt-2">
+      <Button href="/livro" variant="primary">
+        <BookOpen size={18} />
+        Ir para o livro
+      </Button>
+    </div>
   </Stack>
 </Layout>
